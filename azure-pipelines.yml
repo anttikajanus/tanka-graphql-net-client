@@ -32,5 +32,6 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- script : nuget.exe sources Add -Name "tanka-graphql-net-client-packages" -Source "https://pkgs.dev.azure.com/anttikajanus/_packaging/tanka-graphql-net-client-packages/nuget/v3/index.json"
 - script : nuget.exe push -Source "tanka-graphql-net-client-packages" -ApiKey AzureDevOps *.nupkg
     
