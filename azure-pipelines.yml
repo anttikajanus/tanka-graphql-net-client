@@ -19,7 +19,8 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
-    restoreSolution: '$(solution)'
+    command: 'restore'
+    projects: '**/*.csproj'
 
 - task: VSBuild@1
   inputs:
@@ -34,11 +35,12 @@ steps:
 
 # - script : nuget.exe sources Add -Name "tanka-graphql-net-client-packages" -Source "https://pkgs.dev.azure.com/anttikajanus/_packaging/tanka-graphql-net-client-packages/nuget/v3/index.json"
 # - script : nuget.exe push -Source "tanka-graphql-net-client-packages" -ApiKey AzureDevOps *.nupkg
+
 - task: DotNetCoreCLI@2
-  displayName: 'NuGet push'
   inputs:
-    command: push
-    allowPackageConflicts: true
-  #  packagesToPush: '$(build.artifactStagingDirectory)/*.nupkg'
-    publishVstsFeed: 'tanka-graphql-net-client-packages'
+    command: 'push'
+    #nuGetFeedType: 'internal' # Required when command == push. Options: internal, external
+    #packagesToPush: '$(build.artifactStagingDirectory)/*.nupkg' # Required when command == push
+    #publishVstsFeed: # Required when command == push && NuGetFeedType == internal
+    #publishFeedCredentials: # Required when command == push && NuGetFeedType == external
 
