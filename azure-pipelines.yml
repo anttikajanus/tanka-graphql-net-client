@@ -39,6 +39,6 @@ steps:
   inputs:
     command: push
     allowPackageConflicts: true
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    packagesToPush: '$(build.artifactStagingDirectory)/*.nupkg';$(Build.ArtifactStagingDirectory)/**/*.nupkg'
     publishVstsFeed: 'tanka-graphql-net-client-packages'
 
