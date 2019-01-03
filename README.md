@@ -4,6 +4,8 @@ Tanka GraphQL .NET Client library
 
 This library provides easy to use cross-platform client API for [Tanka GraphQL execution library](https://github.com/pekkah/tanka-graphql) based server using [ASP.NET Core SignalR .NET Client](https://docs.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-2.2)s `HubConnection`. 
 
+[![Build Status](https://dev.azure.com/anttikajanus/tanka-graphql-net-client/_apis/build/status/anttikajanus.tanka-graphql-net-client?branchName=master)](https://dev.azure.com/anttikajanus/tanka-graphql-net-client/_build/latest?definitionId=1?branchName=master)
+
 ## Features
 
 - Execute queries, mutations and subsriptions using SignalR HubConnection
