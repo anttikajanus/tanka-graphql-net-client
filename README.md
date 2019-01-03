@@ -12,13 +12,13 @@ This library provides easy to use cross-platform client API for [Tanka GraphQL e
 
 ## Gettings started
 
-### Add usings
+#### Add usings
 
 ```csharp
 using Tanka.GraphQL;
 ```
 
-### Defining models
+#### Defining models
 
 You can define your models as POCOs. In these examples, I'm using separate models for input and output messages. 
 
@@ -36,7 +36,7 @@ public class InputMessage
 
 ```
 
-### Connect to the server
+#### Connect to the server
 
 Create SignalR `HubConnection` normally. Read more [how to connect to a hub](https://docs.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-2.2#connect-to-a-hub)
 
@@ -47,7 +47,11 @@ var connection = new HubConnectionBuilder()
 await connection.StartAsync();
 ```
 
-### Query
+#### Queries and mutations
+
+In GraphQL both queries and mutations are defined as **queries** so they are handled the same way in the API. 
+
+##### Query
 
 ```csharp
 var channelId = 1;
@@ -72,9 +76,7 @@ var result = await connection.QueryAsync(queryRequest);
 var data = result.GetDataFieldAs<List<Messages>>();
 ````
 
-### Mutation
-
-In GraphQL both queries and mutations are defined as **queries**. 
+##### Mutation
 
 ```csharp
 var postMessageMutationGQL = @"mutation PostMessage($channelId: Int!, $message: InputMessage) {
@@ -100,7 +102,7 @@ var data = result.GetDataFieldAs<Messages>();
 
 ### Subscription
 
-API provides support for subscriptions as streams using `IObservable<ExecutionResult>`. You can subscripe to the stream using `Subscribe` method.
+API provides support for subscriptions as streams using `IObservable<ExecutionResult>`. You can subscribe to the stream using `Subscribe` method.
 
 ```csharp
  var channelSubsribtionGQL = @"subscription MessageAdded($channelId: Int!) {
