@@ -20,7 +20,7 @@ using Tanka.GraphQL;
 
 #### Defining models
 
-You can define your models as POCOs. In these examples, I'm using separate models for input and output messages. 
+You can define your DTOs as POCOs. In these examples, I'm using separate models for input and output messages. 
 
 ```csharp
 public class Message
@@ -33,12 +33,13 @@ public class InputMessage
 {
     public string Content { get; set; }
 }
-
 ```
 
-#### Connect to the server
+#### Connect to the server endpoint
 
 Create SignalR `HubConnection` normally. Read more [how to connect to a hub](https://docs.microsoft.com/en-us/aspnet/core/signalr/dotnet-client?view=aspnetcore-2.2#connect-to-a-hub)
+
+Read more about the server implementation from [Tanka GraphQL documentation](https://github.com/pekkah/tanka-graphql/tree/aef8fc4a8f9ae4da08812293ad0e7e51cf0312eb#server)
 
 ```csharp
 var connection = new HubConnectionBuilder()
@@ -73,7 +74,7 @@ var queryRequest = new QueryRequest()
 };
 
 var result = await connection.QueryAsync(queryRequest);
-var data = result.GetDataFieldAs<List<Messages>>();
+var data = result.GetDataFieldAs<List<Message>>();
 ````
 
 ##### Mutation
@@ -100,7 +101,7 @@ var result = await connection.QueryAsync(queryRequest);
 var data = result.GetDataFieldAs<Messages>();
 ```
 
-### Subscription
+#### Subscription
 
 API provides support for subscriptions as streams using `IObservable<ExecutionResult>`. You can subscribe to the stream using `Subscribe` method.
 
@@ -127,7 +128,7 @@ serverSubscription.Subscribe(
                 result =>
                 {
                     var message = result.GetDataFieldAs<Message>();
-                    // Handle new message
+                    // Handle new message added
                 },
                 // On error corrured
                 error =>
