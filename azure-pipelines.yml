@@ -33,6 +33,8 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: NuGetCommand@2
+  displayName: 'NuGet push'
   inputs:
-    command: pack
-    packagesToPack: '**/*.csproj'
+    command: push
+    feedPublish: 'tanka-graphql-net-client-packages'
+    allowPackageConflicts: true
