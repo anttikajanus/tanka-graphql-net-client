@@ -33,8 +33,9 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - task: NuGetCommand@2
-  displayName: 'NuGet push'
+  displayName: 'NuGet push to Azure Artifact Feed'
   inputs:
     command: push
+    packagePath: '*.nupkg'
     feedPublish: 'tanka-graphql-net-client-packages'
     allowPackageConflicts: true
