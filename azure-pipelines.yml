@@ -24,11 +24,12 @@ steps:
   inputs:
     version: '2.2.100'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Nuget restore'
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
+# Based on https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build?tabs=netcore2x, there is no need to run restore separately
+#- task: DotNetCoreCLI@2
+#  displayName: 'Nuget restore'
+#  inputs:
+#    command: 'restore'
+#    projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build'
@@ -38,10 +39,10 @@ steps:
     # As a workaround pass configuration as a direct argument and control value as a variable
     arguments: '--configuration $(buildConfiguration)'
     projects: '**/*.csproj'
-    versioningScheme : byPrereleaseNumber
-    requestedMajorVersion: '$(majorVersion)'
-    requestedMinorVersion: '$(minorVersion)'
-    requestedPatchVersion: '$(patchVersion)'
+    #versioningScheme : byPrereleaseNumber
+    #requestedMajorVersion: '$(majorVersion)'
+    #requestedMinorVersion: '$(minorVersion)'
+    #requestedPatchVersion: '$(patchVersion)'
 
 - task: VSTest@2
   displayName: 'Run unit tests'
@@ -50,11 +51,15 @@ steps:
     configuration: '$(buildConfiguration)'
 
 # The build phase should build the nuget file, so I assume that that step can be skipped
-#- task: DotNetCoreCLI@2
-#  displayName: 'Nuget pack'
-#  inputs:
-#    command: 'pack'
-#    configuration: '$(buildConfiguration)'
+- task: DotNetCoreCLI@2
+  displayName: 'Nuget pack'
+  inputs:
+    command: 'pack'
+    configurationToPack: '$(buildConfiguration)'
+    versioningScheme : byPrereleaseNumber
+    requestedMajorVersion: '$(majorVersion)'
+    requestedMinorVersion: '$(minorVersion)'
+    requestedPatchVersion: '$(patchVersion)'
 
 
 - task: DotNetCoreCLI@2
