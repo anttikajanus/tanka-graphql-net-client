@@ -18,14 +18,23 @@ steps:
 - task: NuGetToolInstaller@0
 
 - task: DotNetCoreCLI@2
+  displayName: 'Nuget restore'
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build'
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Nuget pack'
+  inputs:
+    command: 'pack'
+   # projects: '**/*.csproj'
+
 
 # - task: VSBuild@1
 #  inputs:
