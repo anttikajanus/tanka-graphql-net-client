@@ -53,7 +53,7 @@ steps:
   displayName: 'Nuget push'
   inputs:
     command: 'push'
-    packagesToPush: '**/*.nupkg;-:**/*.Tests.nupkg' # Required when command == push
+    packagesToPush: '**/*.nupkg;' 
 
     #packagesToPush: '$(build.artifactStagingDirectory)/**/*.nupkg' # Required when command == push
     #nuGetFeedType: 'internal' # Required when command == push. Options: internal, external
