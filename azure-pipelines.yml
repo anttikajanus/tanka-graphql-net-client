@@ -30,12 +30,18 @@ steps:
     configuration: '$(buildConfiguration)'
     projects: '**/*.csproj'
 
-- task: DotNetCoreCLI@2
-  displayName: 'Nuget pack'
-  inputs:
-    command: 'pack'
-   # projects: '**/*.csproj'
+# Recreate test projects for .net core and add that correctly
+#- task: VSTest@2
+#  inputs:
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
 
+# The build phase should build the nuget file, so I assume that that step can be skipped
+#- task: DotNetCoreCLI@2
+#  displayName: 'Nuget pack'
+#  inputs:
+#    command: 'pack'
+#    configuration: '$(buildConfiguration)'
 
 # - task: VSBuild@1
 #  inputs:
@@ -43,11 +49,7 @@ steps:
 #    platform: '$(buildPlatform)'
 #    configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-
+# This will require authentication, which I couldn't find how to do
 # - script : nuget.exe sources Add -Name "tanka-graphql-net-client-packages" -Source "https://pkgs.dev.azure.com/anttikajanus/_packaging/tanka-graphql-net-client-packages/nuget/v3/index.json"
 # - script : nuget.exe push -Source "tanka-graphql-net-client-packages" -ApiKey AzureDevOps *.nupkg
 
