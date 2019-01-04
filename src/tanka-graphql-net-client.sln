@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Net.Client", "tanka-graphql-net-client\Tanka.GraphQL.Net.Client.csproj", "{A8E57C25-6423-4176-B896-4FE709DD7671}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tanka.GraphQL.Net.Client", "tanka-graphql-net-client\Tanka.GraphQL.Net.Client.csproj", "{A8E57C25-6423-4176-B896-4FE709DD7671}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Net.Client.Tests", "..\tests\tanka-graphql-net-client-tests\Tanka.GraphQL.Net.Client.Tests.csproj", "{C164738C-F3C9-45E3-9D7B-D0FC9AACD9C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A8E57C25-6423-4176-B896-4FE709DD7671}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8E57C25-6423-4176-B896-4FE709DD7671}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8E57C25-6423-4176-B896-4FE709DD7671}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C164738C-F3C9-45E3-9D7B-D0FC9AACD9C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C164738C-F3C9-45E3-9D7B-D0FC9AACD9C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C164738C-F3C9-45E3-9D7B-D0FC9AACD9C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C164738C-F3C9-45E3-9D7B-D0FC9AACD9C5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

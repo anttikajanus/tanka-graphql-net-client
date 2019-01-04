@@ -67,12 +67,11 @@ namespace Tanka.GraphQL
             get => _errors;
             set
             {
-                if (value != null)
-                    if (!value.Any())
-                    {
-                        _errors = null;
-                        return;
-                    }
+                if (value != null && !value.Any())
+                {
+                    _errors = null;
+                    return;
+                }
 
                 _errors = value;
             }
