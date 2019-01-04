@@ -54,7 +54,7 @@ steps:
   inputs:
     command: 'push'
     packagesToPush: '**/*.nupkg;' 
-
+    publishVstsFeed: '7c355e95-b690-496c-a239-4feb7350bbdd'
     #packagesToPush: '$(build.artifactStagingDirectory)/**/*.nupkg' # Required when command == push
     #nuGetFeedType: 'internal' # Required when command == push. Options: internal, external
     #publishVstsFeed: # Required when command == push && NuGetFeedType == internal
