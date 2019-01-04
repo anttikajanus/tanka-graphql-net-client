@@ -14,10 +14,9 @@ variables:
   minorVersion: '1'
   patchVersion: '1'
 
-
 steps:
 - task: NuGetToolInstaller@0
-  displayName: 'Install nuget tools'
+  displayName: 'Install NuGet tools'
 
 - task: DotNetCoreInstaller@0
   displayName: 'Install .NET core'
@@ -57,8 +56,9 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
+    nobuild: true
     # The projects are already built in the previous step, so skip build here
-    arguments: '--no-build'
+    #arguments: '--no-build'
     configurationToPack: '$(buildConfiguration)'
     versioningScheme : byPrereleaseNumber
     requestedMajorVersion: '$(majorVersion)'
