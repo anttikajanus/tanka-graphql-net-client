@@ -14,6 +14,18 @@ This library provides easy to use cross-platform client API for [Tanka GraphQL e
 
 ## Gettings started
 
+### Install
+
+To access latest builds, you can connect to a following feed:
+
+```
+https://pkgs.dev.azure.com/anttikajanus/_packaging/tanka-graphql-net-client-packages/nuget/v3/index.json
+```
+
+See how to add custom nuget feeds in Visual Studio from [here](https://go.microsoft.com/fwlink/?linkid=698608)
+
+### Short API summary
+
 #### Add usings
 
 ```csharp
