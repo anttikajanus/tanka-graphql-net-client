@@ -5,13 +5,20 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  majorVersion: '0'
+  minorVersion: '1'
+  patchVersion: '1'
+
 
 steps:
 - task: NuGetToolInstaller@0
   displayName: 'Install nuget tools'
+
+- task: DotNetCoreInstaller@0
+  displayName: 'Install .NET core'
+  inputs:
+    version: '2.2.100'
 
 - task: DotNetCoreCLI@2
   displayName: 'Nuget restore'
@@ -23,14 +30,18 @@ steps:
   displayName: 'Build'
   inputs:
     command: 'build'
-    configuration: '$(buildConfiguration)'
+    configuration: 'release'
     projects: '**/*.csproj'
+    versioningScheme : byPrereleaseNumber
+    requestedMajorVersion: '$(majorVersion)'
+    requestedMinorVersion: '$(minorVersion)'
+    requestedPatchVersion: '$(patchVersion)'
 
-# Recreate test projects for .net core and add that correctly
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
+- task: VSTest@2
+  displayName: 'Run unit tests'
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 
 # The build phase should build the nuget file, so I assume that that step can be skipped
 #- task: DotNetCoreCLI@2
