@@ -1,3 +1,8 @@
+# Documentation for Azure Pipelines : https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=vsts
+# Source for Azure Pipeline tasks : https://github.com/Microsoft/azure-pipelines-tasks
+#
+# Note that documentation and Azure DevOps editor uses different aliases for the commands. 
+
 trigger:
 - master
 
@@ -14,18 +19,19 @@ variables:
   minorVersion: '1'
   patchVersion: '1'
 
-
 steps:
 - task: NuGetToolInstaller@0
-  displayName: 'Install nuget tools'
+  displayName: 'Install NuGet tools'
 
 - task: DotNetCoreInstaller@0
   displayName: 'Install .NET core'
   inputs:
     version: '2.2.100'
 
+# Based on https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build?tabs=netcore2x, there is no need to run restore separately
+# but do it in a separate step to keep track on the timings
 - task: DotNetCoreCLI@2
-  displayName: 'Nuget restore'
+  displayName: 'Restore NuGet packages'
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
@@ -36,12 +42,9 @@ steps:
     command: 'build'
     # For some reason task doesn't support 'configuration' option directly even that is in the example but setting that doesn't do anything.
     # As a workaround pass configuration as a direct argument and control value as a variable
+    # TODO retest if the configuration works
     arguments: '--configuration $(buildConfiguration)'
     projects: '**/*.csproj'
-    versioningScheme : byPrereleaseNumber
-    requestedMajorVersion: '$(majorVersion)'
-    requestedMinorVersion: '$(minorVersion)'
-    requestedPatchVersion: '$(patchVersion)'
 
 - task: VSTest@2
   displayName: 'Run unit tests'
@@ -50,21 +53,23 @@ steps:
     configuration: '$(buildConfiguration)'
 
 # The build phase should build the nuget file, so I assume that that step can be skipped
-#- task: DotNetCoreCLI@2
-#  displayName: 'Nuget pack'
-#  inputs:
-#    command: 'pack'
-#    configuration: '$(buildConfiguration)'
-
+- task: DotNetCoreCLI@2
+  displayName: 'Pack NuGet packages'
+  inputs:
+    command: 'pack'
+    searchPatternPack: ' **/*.csproj;!**/*.Tests.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
+    nobuild: true # The projects are already built in the previous step, so skip build here
+    configurationToPack: '$(buildConfiguration)'
+    versioningScheme : byPrereleaseNumber
+    requestedMajorVersion: '$(majorVersion)'
+    requestedMinorVersion: '$(minorVersion)'
+    requestedPatchVersion: '$(patchVersion)'
+    outputDir: '$(Build.ArtifactStagingDirectory)/nuget/' # Add 'nuget' folder to the path to be explicit where the files are, helps push command to find the packages
 
 - task: DotNetCoreCLI@2
-  displayName: 'Nuget push'
+  displayName: 'Push NuGet packages'
   inputs:
     command: 'push'
-    packagesToPush: '**/*.nupkg;' 
-    publishVstsFeed: '7c355e95-b690-496c-a239-4feb7350bbdd'
-    #packagesToPush: '$(build.artifactStagingDirectory)/**/*.nupkg' # Required when command == push
-    #nuGetFeedType: 'internal' # Required when command == push. Options: internal, external
-    #publishVstsFeed: # Required when command == push && NuGetFeedType == internal
-    #publishFeedCredentials: # Required when command == push && NuGetFeedType == external
+    searchPatternPush: '$(Build.ArtifactStagingDirectory)/nuget/*.nupkg' # example of a package path 'D:\a\1\a\nuget\Tanka.GraphQL.Net.Client.0.1.1-CI-20190104-231010.nupkg'
+    feedPublish: '7c355e95-b690-496c-a239-4feb7350bbdd'
 
