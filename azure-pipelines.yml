@@ -8,6 +8,10 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  majorVersion: '0'
+  minorVersion: '1'
+  patchVersion: '0'
+
 
 steps:
 - task: NuGetToolInstaller@0
@@ -25,6 +29,10 @@ steps:
     command: 'build'
     configuration: '$(buildConfiguration)'
     projects: '**/*.csproj'
+    versioningScheme : byPrereleaseNumber
+    major: '$(majorVersion)'
+    minor: '$(minorVersion)'
+    patch: '$(patchVersion)'
 
 # Recreate test projects for .net core and add that correctly
 #- task: VSTest@2
