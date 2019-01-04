@@ -25,11 +25,12 @@ steps:
     version: '2.2.100'
 
 # Based on https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-build?tabs=netcore2x, there is no need to run restore separately
-#- task: DotNetCoreCLI@2
-#  displayName: 'Nuget restore'
-#  inputs:
-#    command: 'restore'
-#    projects: '**/*.csproj'
+# but do it in a separate step to keep track on the timings
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore'
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build'
@@ -52,9 +53,10 @@ steps:
 
 # The build phase should build the nuget file, so I assume that that step can be skipped
 - task: DotNetCoreCLI@2
-  displayName: 'Nuget pack'
+  displayName: 'NuGet pack'
   inputs:
     command: 'pack'
+    packagesToPack: '**/*.csproj'
     configurationToPack: '$(buildConfiguration)'
     versioningScheme : byPrereleaseNumber
     requestedMajorVersion: '$(majorVersion)'
@@ -63,7 +65,7 @@ steps:
 
 
 - task: DotNetCoreCLI@2
-  displayName: 'Nuget push'
+  displayName: 'NuGet push'
   inputs:
     command: 'push'
     packagesToPush: '**/*.nupkg;' 
