@@ -5,8 +5,6 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   majorVersion: '0'
   minorVersion: '1'
@@ -32,12 +30,12 @@ steps:
   displayName: 'Build'
   inputs:
     command: 'build'
-    configuration: '$(buildConfiguration)'
+    configuration: 'release'
     projects: '**/*.csproj'
     versioningScheme : byPrereleaseNumber
-    major: '$(majorVersion)'
-    minor: '$(minorVersion)'
-    patch: '$(patchVersion)'
+    requestedMajorVersion: '$(majorVersion)'
+    requestedMinorVersion: '$(minorVersion)'
+    requestedPatchVersion: '$(patchVersion)'
 
 - task: VSTest@2
   displayName: 'Run unit tests'
