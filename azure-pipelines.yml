@@ -39,10 +39,6 @@ steps:
     # As a workaround pass configuration as a direct argument and control value as a variable
     arguments: '--configuration $(buildConfiguration)'
     projects: '**/*.csproj'
-    #versioningScheme : byPrereleaseNumber
-    #requestedMajorVersion: '$(majorVersion)'
-    #requestedMinorVersion: '$(minorVersion)'
-    #requestedPatchVersion: '$(patchVersion)'
 
 - task: VSTest@2
   displayName: 'Run unit tests'
@@ -55,10 +51,9 @@ steps:
   displayName: 'NuGet pack'
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj'
-    nobuild: true
+    packagesToPack: ' **/*.csproj;-:**/*.Tests.csproj'
     # The projects are already built in the previous step, so skip build here
-    #arguments: '--no-build'
+    nobuild: true
     configurationToPack: '$(buildConfiguration)'
     versioningScheme : byPrereleaseNumber
     requestedMajorVersion: '$(majorVersion)'
