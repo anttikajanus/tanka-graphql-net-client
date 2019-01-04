@@ -1,21 +1,28 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Tanka.GraphQL</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!-- Disable determistic build so we can use auto increments with the versions -->
+    <Deterministic>false</Deterministic>
+  </PropertyGroup>
+
+  <!-- Build metadata -->
+  <PropertyGroup>
     <Authors>Antti kajanus</Authors>
     <Product>Tanka GraphQL Net Client</Product>
     <Description>GraphQL Query, Mutation and Subscription library for Tanka GraphQL execution engine.</Description>
-    <PackageLicenseUrl>https://github.com/anttikajanus/tanka-graphql-net-client/blob/master/LICENSE</PackageLicenseUrl>
+    <License>https://github.com/anttikajanus/tanka-graphql-net-client/blob/master/LICENSE</License>
     <PackageProjectUrl>https://github.com/anttikajanus/tanka-graphql-net-client</PackageProjectUrl>
     <RepositoryUrl>https://github.com/anttikajanus/tanka-graphql-net-client</RepositoryUrl>
     <PackageTags>GraphQL, Tanka, SignalR</PackageTags>
     <Version>0.1.0</Version>
     <Copyright>Antti Kajanus</Copyright>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
-  </PropertyGroup>
-
+    <AssemblyVersion>0.1.0.*</AssemblyVersion>
+  
+</PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
