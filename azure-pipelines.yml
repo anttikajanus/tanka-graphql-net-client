@@ -1,0 +1,62 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'VS2017-Win2016'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Install nuget tools'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Nuget restore'
+  inputs:
+    command: 'restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build'
+  inputs:
+    command: 'build'
+    configuration: '$(buildConfiguration)'
+    projects: '**/*.csproj'
+
+# Recreate test projects for .net core and add that correctly
+#- task: VSTest@2
+#  inputs:
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
+
+# The build phase should build the nuget file, so I assume that that step can be skipped
+#- task: DotNetCoreCLI@2
+#  displayName: 'Nuget pack'
+#  inputs:
+#    command: 'pack'
+#    configuration: '$(buildConfiguration)'
+
+# - task: VSBuild@1
+#  inputs:
+#    solution: '$(solution)'
+#    platform: '$(buildPlatform)'
+#    configuration: '$(buildConfiguration)'
+
+# This will require authentication, which I couldn't find how to do
+# - script : nuget.exe sources Add -Name "tanka-graphql-net-client-packages" -Source "https://pkgs.dev.azure.com/anttikajanus/_packaging/tanka-graphql-net-client-packages/nuget/v3/index.json"
+# - script : nuget.exe push -Source "tanka-graphql-net-client-packages" -ApiKey AzureDevOps *.nupkg
+
+- task: DotNetCoreCLI@2
+  displayName: 'Nuget push'
+  inputs:
+    command: 'push'
+    packagesToPush: '**/*.nupkg;' 
+    publishVstsFeed: '7c355e95-b690-496c-a239-4feb7350bbdd'
+    #packagesToPush: '$(build.artifactStagingDirectory)/**/*.nupkg' # Required when command == push
+    #nuGetFeedType: 'internal' # Required when command == push. Options: internal, external
+    #publishVstsFeed: # Required when command == push && NuGetFeedType == internal
+    #publishFeedCredentials: # Required when command == push && NuGetFeedType == external
+
