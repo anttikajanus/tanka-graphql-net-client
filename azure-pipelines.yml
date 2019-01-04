@@ -48,10 +48,10 @@ steps:
 
 # The build phase should build the nuget file, so I assume that that step can be skipped
 - task: DotNetCoreCLI@2
-  displayName: 'Packaging NuGet packages1'
+  displayName: 'Packaging NuGet packages'
   inputs:
     command: 'pack' 
-    searchPatternPack: ' **/*.csproj;-:**/*.Tests.csproj'
+    searchPatternPack: ' **/*.csproj;!**/*.Tests.csproj'
     # The projects are already built in the previous step, so skip build here
     nobuild: true
     configurationToPack: '$(buildConfiguration)'
@@ -65,10 +65,6 @@ steps:
   displayName: 'Pushing NuGet packages'
   inputs:
     command: 'push'
-    searchPatternPush: '**/*.nupkg;' 
+    searchPatternPush: '**/*.nupkg' 
     feedPublish: '7c355e95-b690-496c-a239-4feb7350bbdd'
-    #packagesToPush: '$(build.artifactStagingDirectory)/**/*.nupkg' # Required when command == push
-    #nuGetFeedType: 'internal' # Required when command == push. Options: internal, external
-    #publishVstsFeed: # Required when command == push && NuGetFeedType == internal
-    #publishFeedCredentials: # Required when command == push && NuGetFeedType == external
 
