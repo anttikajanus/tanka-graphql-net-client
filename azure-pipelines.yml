@@ -50,21 +50,20 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'Packaging NuGet packages'
   inputs:
-    command: 'pack' 
-    searchPatternPack: ' **/*.csproj;!**/*.Tests.csproj'
-    # The projects are already built in the previous step, so skip build here
-    nobuild: true
+    command: 'pack'
+    searchPatternPack: ' **/*.csproj;!**/*.Tests.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
+    nobuild: true # The projects are already built in the previous step, so skip build here
     configurationToPack: '$(buildConfiguration)'
     versioningScheme : byPrereleaseNumber
     requestedMajorVersion: '$(majorVersion)'
     requestedMinorVersion: '$(minorVersion)'
     requestedPatchVersion: '$(patchVersion)'
-
+    outputDir: '$(Build.ArtifactStagingDirectory)/nuget/' 
 
 - task: DotNetCoreCLI@2
   displayName: 'Pushing NuGet packages'
   inputs:
     command: 'push'
-    searchPatternPush: '**/*.nupkg' 
+    searchPatternPush: '$(Build.ArtifactStagingDirectory)/nuget/*.nupkg' # example of a package path 'D:\a\1\a\Tanka.GraphQL.Net.Client.0.1.1-CI-20190104-225233.nupkg'
     feedPublish: '7c355e95-b690-496c-a239-4feb7350bbdd'
 
