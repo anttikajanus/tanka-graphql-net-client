@@ -57,6 +57,8 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
+    # The projects are already built in the previous step, so skip build here
+    arguments: '--no-build'
     configurationToPack: '$(buildConfiguration)'
     versioningScheme : byPrereleaseNumber
     requestedMajorVersion: '$(majorVersion)'
