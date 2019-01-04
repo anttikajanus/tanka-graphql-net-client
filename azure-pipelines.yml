@@ -20,7 +20,7 @@ steps:
 - task: DotNetCoreInstaller@0
   displayName: 'Install .NET core'
   inputs:
-    version: '2.2'
+    version: '2.2.100'
 
 - task: DotNetCoreCLI@2
   displayName: 'Nuget restore'
@@ -39,11 +39,11 @@ steps:
     minor: '$(minorVersion)'
     patch: '$(patchVersion)'
 
-# Recreate test projects for .net core and add that correctly
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
+- task: VSTest@2
+  displayName: 'Run unit tests'
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
 
 # The build phase should build the nuget file, so I assume that that step can be skipped
 #- task: DotNetCoreCLI@2
