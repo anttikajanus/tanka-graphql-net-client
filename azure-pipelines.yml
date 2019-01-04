@@ -5,6 +5,9 @@ pool:
   vmImage: 'VS2017-Win2016'
 
 variables:
+  # Upon each new build a new machine is provisioned and therefore will not have the cache from before so we can disable caching
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1 
+  # Build configuration settings
   buildConfiguration: 'Release'
   majorVersion: '0'
   minorVersion: '1'
@@ -30,7 +33,7 @@ steps:
   displayName: 'Build'
   inputs:
     command: 'build'
-    configuration: 'release'
+    arguments: '--configuration $(buildConfiguration)'
     projects: '**/*.csproj'
     versioningScheme : byPrereleaseNumber
     requestedMajorVersion: '$(majorVersion)'
@@ -50,15 +53,6 @@ steps:
 #    command: 'pack'
 #    configuration: '$(buildConfiguration)'
 
-# - task: VSBuild@1
-#  inputs:
-#    solution: '$(solution)'
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
-
-# This will require authentication, which I couldn't find how to do
-# - script : nuget.exe sources Add -Name "tanka-graphql-net-client-packages" -Source "https://pkgs.dev.azure.com/anttikajanus/_packaging/tanka-graphql-net-client-packages/nuget/v3/index.json"
-# - script : nuget.exe push -Source "tanka-graphql-net-client-packages" -ApiKey AzureDevOps *.nupkg
 
 - task: DotNetCoreCLI@2
   displayName: 'Nuget push'
