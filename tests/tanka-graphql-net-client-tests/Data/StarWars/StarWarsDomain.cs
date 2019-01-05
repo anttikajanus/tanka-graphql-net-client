@@ -9,6 +9,8 @@ namespace Tanka.GraphQL.Net.Client.Tests.Data.StarWars
         public string Id { get; set; }
 
         public string Name { get; set; }
+
+        public double GeneralPerformanceRaiting { get; set; }
     }
 
     public class Human : Character

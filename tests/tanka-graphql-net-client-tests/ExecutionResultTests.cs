@@ -252,7 +252,9 @@ namespace Tanka.GraphQL.Net.Client.Tests
             var result = new ExecutionResult();
 
             // Act
+#pragma warning disable IDE0039 // Use local function
             Action act = () => result.GetDataFieldAs<Human>();
+#pragma warning restore IDE0039 // Use local function
 
             // Assert
             Assert.Throws<InvalidOperationException>(act);
@@ -265,7 +267,9 @@ namespace Tanka.GraphQL.Net.Client.Tests
             var result = new ExecutionResult();
 
             // Act
+#pragma warning disable IDE0039 // Use local function
             Action act = () => result.GetExtensionFieldAs<Human>();
+#pragma warning restore IDE0039 // Use local function
 
             // Assert
             Assert.Throws<InvalidOperationException>(act);
@@ -280,6 +284,7 @@ namespace Tanka.GraphQL.Net.Client.Tests
                     ""character"": {
                       ""id"": ""humans/luke"",
                       ""name"": ""Luke"",
+                      ""generalPerformanceRaiting"": 6.7,
                       ""appearsIn"": [
                         ""JEDI"",
                         ""EMPIRE"",
@@ -296,6 +301,7 @@ namespace Tanka.GraphQL.Net.Client.Tests
             // Assert
             Assert.Equal("Luke", human.Name);
             Assert.Equal("humans/luke", human.Id);
+            Assert.Equal(6.7, human.GeneralPerformanceRaiting);
             Assert.Equal(3, human.AppearsIn.Count);
         }
 
@@ -417,7 +423,9 @@ namespace Tanka.GraphQL.Net.Client.Tests
             };
 
             // Act
+#pragma warning disable IDE0039 // Use local function
             Action act = () => result.GetDataFieldAs<Human>("key_that_doesn't_exists");
+#pragma warning restore IDE0039 // Use local function
 
             // Assert
             Assert.Throws<KeyNotFoundException>(act);
@@ -435,7 +443,9 @@ namespace Tanka.GraphQL.Net.Client.Tests
             };
 
             // Act
+#pragma warning disable IDE0039 // Use local function
             Action act = () => result.GetExtensionFieldAs<Human>("key_that_doesn't_exists");
+#pragma warning restore IDE0039 // Use local function
 
             // Assert
             Assert.Throws<KeyNotFoundException>(act);
