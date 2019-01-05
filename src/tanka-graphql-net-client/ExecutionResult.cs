@@ -78,40 +78,46 @@ namespace Tanka.GraphQL
         }
 
         /// <summary>
-        /// Get a field from the <see cref="Extensions"/> as a concrete type.
+        /// Get an item from the <see cref="Extensions"/> as a concrete type. If key parameter is not defined or is empty, first item is used.
         /// </summary>
         /// <typeparam name="TFieldType">The expected type.</typeparam>
-        /// <param name="fieldName">The name of the field.</param>
-        /// <returns>The data from the field as an object.</returns>
-        public TFieldType GetExtensionFieldAs<TFieldType>(string fieldName)
+        /// <param name="key">The key of the field.</param>
+        /// <returns>The data from the item as an object.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if result doesn't contain any <see cref="Extensions"/></exception>
+        /// <exception cref="KeyNotFoundException">Thrown if <see cref="Extensions"/> didn't have item with a given key</exception>
+        public TFieldType GetExtensionFieldAs<TFieldType>(string key = "")
         {
-            if (!Extensions.ContainsKey(fieldName))
-                throw new KeyNotFoundException($"Cannot find {fieldName} from the returned {nameof(Extensions)}.");
+            if (Extensions== null)
+                throw new InvalidOperationException($"{this} doesn't contain any extensions.");
 
-            var json = Extensions[fieldName].ToString();
-            var value = JsonConvert.DeserializeObject<TFieldType>(json);
-            return value;
+            var result = GetFieldAs<TFieldType>(Extensions, key);
+            return result;
         }
 
         /// <summary>
-        /// Get a field from the <see cref="Data"/> as a concrete type. If field parameter is not defined, first value is used.
+        /// Get an item from the <see cref="Data"/> as a concrete type. If key parameter is not defined or is empty, first item is used.
         /// </summary>
         /// <typeparam name="TFieldType">The expected type.</typeparam>
-        /// <param name="fieldName">The name of the field.</param>
-        /// <returns>The data from the field as an object.</returns>
-        public TFieldType GetDataFieldAs<TFieldType>(string fieldName = "")
+        /// <param name="key">The key of the item.</param>
+        /// <returns>The data from the item as an object.</returns>
+        /// <exception cref="InvalidOperationException">Thrown if result doesn't contain any <see cref="Data"/></exception>
+        /// <exception cref="KeyNotFoundException">Thrown if <see cref="Data"/> didn't have item with a given key</exception>
+        public TFieldType GetDataFieldAs<TFieldType>(string key = "")
         {
             if (Data == null)
-                throw new Exception("Data wasn't returned from the server...");
+                throw new InvalidOperationException($"{this} doesn't contain any data.");
+
+            var result = GetFieldAs<TFieldType>(Data, key);
+            return result;
+        }
+
+        private TFieldType GetFieldAs<TFieldType>(IDictionary<string, object> dictinary, string key)
+        {
             var value = string.Empty;
-            if (string.IsNullOrEmpty(fieldName) || string.IsNullOrWhiteSpace(fieldName))
-            {
-                value = Data.First().Value.ToString();
-            }
+            if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
+                value = dictinary.First().Value.ToString();
             else
-            {
-                value = Data[fieldName].ToString();
-            }
+                value = dictinary[key].ToString();
 
             var result = JsonConvert.DeserializeObject<TFieldType>(value);
             return result;
