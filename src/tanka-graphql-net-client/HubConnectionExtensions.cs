@@ -2,6 +2,7 @@
 using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Tanka.GraphQL
@@ -16,16 +17,18 @@ namespace Tanka.GraphQL
         /// </summary>
         /// <param name="connection">SignalR connection that is used to execute the query.</param>
         /// <param name="queryRequest">Query that will be executed.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the query.</param>
         /// <returns>Return <see cref="GraphQLExecutionResult"/> that contains the execution result from the service.</returns>
         /// <remarks>
         /// Use <see cref="QueryAsync(HubConnection, QueryRequest)"/> for queries and mutations and use 
         /// <see cref="SubscribeAsync(HubConnection, QueryRequest)"/> for subscriptions.
         /// </remarks>
-        public static async Task<ExecutionResult> QueryAsync(this HubConnection connection, QueryRequest queryRequest)
+        public static async Task<ExecutionResult> QueryAsync(this HubConnection connection, QueryRequest queryRequest, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", queryRequest);
+            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>(
+                                        "query", queryRequest, cancellationToken);
 
-            while (await channelReader.WaitToReadAsync())
+            while (await channelReader.WaitToReadAsync(cancellationToken))
             {
                 while (channelReader.TryRead(out var result))
                 {
@@ -41,6 +44,7 @@ namespace Tanka.GraphQL
         /// </summary>
         /// <param name="connection">SignalR connection that is used to execute the query.</param>
         /// <param name="queryRequest">Subscription query that will be executed.</param>
+        /// <param name="cancellationToken">Cancellation token to cancel the subscription.</param>
         /// <returns>
         /// Returns <see cref="IObservable{GraphQLExecutionResult}"/> that pushes notificatons to the subscribers when subscribed event occurs on the server.
         /// </returns>
@@ -48,16 +52,16 @@ namespace Tanka.GraphQL
         /// Use <see cref="QueryAsync(HubConnection, QueryRequest)"/> for queries and mutations and use 
         /// <see cref="SubscribeAsync(HubConnection, QueryRequest)"/> for subscriptions.
         /// </remarks>
-        public static async Task<IObservable<ExecutionResult>> SubscribeAsync(this HubConnection connection, QueryRequest query)
+        public static async Task<IObservable<ExecutionResult>> SubscribeAsync(this HubConnection connection, QueryRequest query, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", query);
+            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", query, cancellationToken);
             var subject = new Subject<ExecutionResult>();
-
+            
             var subscriptionTask = Task.Run(async () =>
             {
                 try
                 {
-                    while (await channelReader.WaitToReadAsync())
+                    while (await channelReader.WaitToReadAsync(cancellationToken))
                     {
                         while (channelReader.TryRead(out var result))
                         {
