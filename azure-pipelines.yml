@@ -34,7 +34,7 @@ steps:
   displayName: 'Restore NuGet packages'
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: '**/Tanka.GraphQL.Net.Client.*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build'
@@ -44,7 +44,7 @@ steps:
     # As a workaround pass configuration as a direct argument and control value as a variable
     # TODO retest if the configuration works
     arguments: '--configuration $(buildConfiguration)'
-    projects: '**/*.csproj'
+    projects: '**/Tanka.GraphQL.Net.Client.*.csproj'
 
 - task: VSTest@2
   displayName: 'Run unit tests'
@@ -57,7 +57,8 @@ steps:
   displayName: 'Pack NuGet packages'
   inputs:
     command: 'pack'
-    searchPatternPack: ' **/*.csproj;!**/*.Tests.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
+    searchPatternPack: '**/Tanka.GraphQL.Net.Client.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
+#    searchPatternPack: '**/*.csproj;!**/*.Tests.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
     nobuild: true # The projects are already built in the previous step, so skip build here
     configurationToPack: '$(buildConfiguration)'
     versioningScheme : byPrereleaseNumber
