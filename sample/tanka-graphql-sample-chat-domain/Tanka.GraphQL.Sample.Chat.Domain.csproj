@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="tanka.graphql" Version="0.2.0" />
+    <PackageReference Include="tanka.graphql" Version="0.3.1" />
   </ItemGroup>
 
 </Project>
