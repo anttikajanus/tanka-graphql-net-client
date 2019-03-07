@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Diagnostics;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Threading;
@@ -69,15 +70,21 @@ namespace Tanka.GraphQL
                         }
                     }
                 }
+                catch (TaskCanceledException tce)
+                {
+                    Debug.WriteLine(tce);
+                    subject.OnCompleted();
+                }
                 catch (Exception ex)
                 {
+                    Debug.WriteLine(ex);
                     subject.OnError(ex);
                 }
                 finally
                 {
                     subject.OnCompleted();
                 }
-            });
+            }, cancellationToken);
 
             return subject.AsObservable();
         }

@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tanka.GraphQL.Sample.Chat.Server", "tanka-graphql-sample-chat-server\Tanka.GraphQL.Sample.Chat.Server.csproj", "{A46DD0FB-A513-447C-A987-373746278875}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tanka.GraphQL.Sample.Chat.Domain", "tanka-graphql-sample-chat-domain\Tanka.GraphQL.Sample.Chat.Domain.csproj", "{1AC0A79D-6CDA-4E84-B95B-44A645A1849E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{4FC21DA5-43F4-41D6-803F-E3B521DC79E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Sample.Chat.Client.Wpf", "tanka-graphql-sample-chat-wpf\Tanka.GraphQL.Sample.Chat.Client.Wpf.csproj", "{5386679A-9C94-4F7F-BF92-510AF3AD1198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Sample.Chat.Client.Shared", "tanka-graphql-sample-chat-client-shared\Tanka.GraphQL.Sample.Chat.Client.Shared.csproj", "{11F51422-DCC1-4D2C-8524-96F6BA6092BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A46DD0FB-A513-447C-A987-373746278875}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A46DD0FB-A513-447C-A987-373746278875}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A46DD0FB-A513-447C-A987-373746278875}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A46DD0FB-A513-447C-A987-373746278875}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC0A79D-6CDA-4E84-B95B-44A645A1849E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC0A79D-6CDA-4E84-B95B-44A645A1849E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC0A79D-6CDA-4E84-B95B-44A645A1849E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC0A79D-6CDA-4E84-B95B-44A645A1849E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5386679A-9C94-4F7F-BF92-510AF3AD1198}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5386679A-9C94-4F7F-BF92-510AF3AD1198}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5386679A-9C94-4F7F-BF92-510AF3AD1198}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5386679A-9C94-4F7F-BF92-510AF3AD1198}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A46DD0FB-A513-447C-A987-373746278875} = {4FC21DA5-43F4-41D6-803F-E3B521DC79E5}
+		{1AC0A79D-6CDA-4E84-B95B-44A645A1849E} = {4FC21DA5-43F4-41D6-803F-E3B521DC79E5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8FEB8473-7949-45CD-A99A-619665339D66}
+	EndGlobalSection
+EndGlobal

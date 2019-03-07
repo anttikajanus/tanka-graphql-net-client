@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Tanka.GraphQL.Sample.Chat.Client.Shared</RootNamespace>
+    <AssemblyName>Tanka.GraphQL.Sample.Chat.Client.Shared</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Tanka.GraphQL.Net.Client" Version="0.1.1-CI-20190108-164415" />
+  </ItemGroup>
+
+</Project>

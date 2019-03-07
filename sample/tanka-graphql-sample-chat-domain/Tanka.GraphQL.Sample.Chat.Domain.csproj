@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>Tanka.GraphQL.Sample.Chat.Domain</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Schemas\Chat.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Schemas\Chat.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="tanka.graphql" Version="0.2.0" />
+  </ItemGroup>
+
+</Project>
