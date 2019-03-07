@@ -44,7 +44,7 @@ steps:
     # As a workaround pass configuration as a direct argument and control value as a variable
     # TODO retest if the configuration works
     arguments: '--configuration $(buildConfiguration)'
-    projects: '**/Tanka.GraphQL.Net.Client.csproj;**/Tanka.GraphQL.Net.Client.Tests.csproj'
+    projects: '**/Tanka.GraphQL.Net.Client.*.csproj'
 
 - task: VSTest@2
   displayName: 'Run unit tests'
