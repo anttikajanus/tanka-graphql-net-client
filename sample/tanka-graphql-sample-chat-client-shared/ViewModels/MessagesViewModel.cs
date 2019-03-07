@@ -16,5 +16,6 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
         }
 
         public string Content => _message.Content;
+        public int Id => _message.Id;
     }
 }

@@ -70,14 +70,12 @@ namespace Tanka.GraphQL
                         }
                     }
                 }
-                catch (TaskCanceledException tce)
+                catch (OperationCanceledException oce)
                 {
-                    Debug.WriteLine(tce);
-                    subject.OnCompleted();
+                    // Operation cancelled, eat exception here and close the stream after this
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex);
                     subject.OnError(ex);
                 }
                 finally

@@ -22,8 +22,11 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
         private readonly IDispatcherContext _dispatcher;
         private readonly Channel _channel;
         private ObservableCollection<MessageViewModel> _messages;
+        private readonly CancellationTokenSource _subscriptionSource;
 
+        IDisposable _messagesSubscription = null;
         private string _newMessageContent;
+
 
         public ChannelViewModel(Channel channel, IChatService chatService, IDispatcherContext dispatcher)
         {
@@ -33,6 +36,8 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
 
             PostMessageCommand = new DelegateCommand<string>(PostMessage, CanPostMessage);
             CloseChannelCommand = new DelegateCommand(CloseChannel, CanCloseChannel);
+
+            _subscriptionSource = new CancellationTokenSource();
         }
 
         public string Name => _channel.Name;
@@ -62,36 +67,27 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
                      .Select(message => new MessageViewModel(message));
                 Messages = new ObservableCollection<MessageViewModel>(messages);
 
-                //var currentDispatcher = Dispatcher.CurrentDispatcher;
-                //var scheduler = new DispatcherScheduler(currentDispatcher);
-                _subscriptionSource = new CancellationTokenSource();
                 var subscription = await _chatService.SubscribeToChannelMessagesAsync(_channel.Id, _subscriptionSource.Token);
                 _messagesSubscription = subscription
-                    .Do(x => Debug.WriteLine(x.Content))
-                    .ObserveOn(Scheduler.Default)
                     .Subscribe(x =>
                     {
                         _dispatcher.Invoke(() =>
                         {
+                            // Check if the message already exists
+                            if (Messages.Any(m => m.Id == x.Id))
+                                return;
+
                             Messages?.Add(new MessageViewModel(x));
                         });
                     });
 
             }
-            catch (TaskCanceledException tce)
-            {
-
-            }
             catch (Exception ex)
             {
-
                 throw;
             }
             
         }
-
-        IDisposable _messagesSubscription = null;
-        CancellationTokenSource _subscriptionSource = null;
 
         public async Task DisconnectAsync()
         {
@@ -107,11 +103,14 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
             try
             {
                 var postedMessage = await _chatService.PostMessageAsync($"{messageContent} at {DateTime.Now}", _channel.Id);
+                // Check if the message already exists
+                if (Messages.Any(m => m.Id == postedMessage.Id))
+                    return;
+
                 Messages.Add(new MessageViewModel(postedMessage));
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
@@ -128,11 +127,12 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
 
             _subscriptionSource.Cancel();
             _messagesSubscription.Dispose();
+            CloseChannelCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanCloseChannel()
         {
-            return true;
+            return !_subscriptionSource.IsCancellationRequested;
         }
     }
 }
