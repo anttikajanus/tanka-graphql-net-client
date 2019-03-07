@@ -34,7 +34,7 @@ steps:
   displayName: 'Restore NuGet packages'
   inputs:
     command: 'restore'
-    projects: '**/Tanka.GraphQL.Net.Client.csproj;**/Tanka.GraphQL.Net.Client.Tests.csproj'
+    projects: '**/Tanka.GraphQL.Net.Client.*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build'
