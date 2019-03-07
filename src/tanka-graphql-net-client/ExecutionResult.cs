@@ -119,8 +119,8 @@ namespace Tanka.GraphQL
             else
                 value = dictinary[key].ToString();
 
-            if (!string.IsNullOrEmpty(value))
-                throw new Exception("test this... since errrs are returned but also this key is tere with null value.");
+            if (string.IsNullOrEmpty(value))
+                throw new Exception("test this... since errors are returned but also this key is there with null value.");
 
             var result = JsonConvert.DeserializeObject<TFieldType>(value);
             return result;

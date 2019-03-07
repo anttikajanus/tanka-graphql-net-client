@@ -11,7 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{4FC21D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Sample.Chat.Client.Wpf", "tanka-graphql-sample-chat-wpf\Tanka.GraphQL.Sample.Chat.Client.Wpf.csproj", "{5386679A-9C94-4F7F-BF92-510AF3AD1198}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Sample.Chat.Client.Shared", "tanka-graphql-sample-chat-client-shared\Tanka.GraphQL.Sample.Chat.Client.Shared.csproj", "{11F51422-DCC1-4D2C-8524-96F6BA6092BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tanka.GraphQL.Sample.Chat.Client.Shared", "tanka-graphql-sample-chat-client-shared\Tanka.GraphQL.Sample.Chat.Client.Shared.csproj", "{11F51422-DCC1-4D2C-8524-96F6BA6092BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tanka.GraphQL.Net.Client", "Tanka.GraphQL.Net.Client", "{BD923A80-A8D4-4670-AFAF-D48DBB6E0271}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tanka.GraphQL.Net.Client", "..\src\tanka-graphql-net-client\Tanka.GraphQL.Net.Client.csproj", "{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +39,10 @@ Global
 		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11F51422-DCC1-4D2C-8524-96F6BA6092BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -42,6 +50,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{A46DD0FB-A513-447C-A987-373746278875} = {4FC21DA5-43F4-41D6-803F-E3B521DC79E5}
 		{1AC0A79D-6CDA-4E84-B95B-44A645A1849E} = {4FC21DA5-43F4-41D6-803F-E3B521DC79E5}
+		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D} = {BD923A80-A8D4-4670-AFAF-D48DBB6E0271}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8FEB8473-7949-45CD-A99A-619665339D66}

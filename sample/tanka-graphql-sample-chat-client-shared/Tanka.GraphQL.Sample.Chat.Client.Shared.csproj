@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
-    <PackageReference Include="Tanka.GraphQL.Net.Client" Version="0.1.1-CI-20190108-164415" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\tanka-graphql-net-client\Tanka.GraphQL.Net.Client.csproj" />
   </ItemGroup>
 
 </Project>
