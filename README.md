@@ -156,6 +156,6 @@ serverSubscription.Subscribe(
                    //No more messages coming
                 });
                 
-// Cancelling a subscription                
+// Cancelling the subscription                
 subscriptionSource.Cancel();
 ```
