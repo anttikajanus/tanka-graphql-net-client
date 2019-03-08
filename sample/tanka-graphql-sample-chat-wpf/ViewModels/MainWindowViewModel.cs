@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.SignalR.Client;
-using Prism.Mvvm;
+﻿using Prism.Mvvm;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Tanka.GraphQL.Sample.Chat.Client.Shared;
-using Tanka.GraphQL.Sample.Chat.Client.Shared.Models;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Services;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels;
 
@@ -66,22 +61,17 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
                 await(_chatService as IAsyncInitializer).InitializeAsync("https://localhost:5001/hubs/graphql");
 
                 // Query all available channels and create view models
-                var channels = (
-                    await _chatService.GetAvailableChatChannelsAsync())
-                    .Select(c => new ChannelViewModel(c, _chatService, _dispatcherContext)
-                );
+                var channels = (await _chatService.GetAvailableChatChannelsAsync())
+                    .Select(c => new ChannelViewModel(c, _chatService, _dispatcherContext));
                 Channels = new ObservableCollection<ChannelViewModel>(channels);
-
-                // Testing
-                Channels.ToList().ForEach(x => Debug.WriteLine(x.Name));
-
+                
                 var tasks = Channels.Select(async channel =>
                 {
                     await channel.ConnectAsync();
                     Debug.WriteLine($"Connected to: {channel.Name}");
                 });
                 await Task.WhenAll(tasks);
-
+                SelectedChannel = Channels.FirstOrDefault();
             }
             catch (HttpRequestException connectionException)
             {

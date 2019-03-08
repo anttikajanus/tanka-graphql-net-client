@@ -10,16 +10,15 @@ using Tanka.GraphQL.Sample.Chat.Client.Shared.Queries.Subscriptions;
 
 namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
 {
+    /// <summary>
+    /// Provides chat functionality in one place.
+    /// </summary>
     public class ChatService : IChatService, IAsyncInitializer
     {
-        private HubConnection _connection;
-        
-        // Queries
+        private HubConnection _connection;   
         private ChannelsQuery _channelsQuery;
         private MessagesQuery _messagesQuery;
-        // Commands
         private PostMessageCommand _postMessageCommand;
-        // Subscriptions
         private MessageAddedSubscription _messageAddedSubscription;
 
         public async Task<List<Channel>> GetAvailableChatChannelsAsync()
@@ -48,25 +47,15 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
 
         public async Task InitializeAsync(string serviceEndpoint)
         {
-            try
-            {
-                _connection = new HubConnectionBuilder()
-                    .WithUrl(serviceEndpoint)
-                    .Build();
-                await _connection.StartAsync();
+            _connection = new HubConnectionBuilder()
+                .WithUrl(serviceEndpoint)
+                .Build();
+            await _connection.StartAsync();
 
-                _channelsQuery = new ChannelsQuery(_connection);
-                _messagesQuery = new MessagesQuery(_connection);
-                _postMessageCommand = new PostMessageCommand(_connection);
-                _messageAddedSubscription = new MessageAddedSubscription(_connection);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            finally
-            {
-            }
+            _channelsQuery = new ChannelsQuery(_connection);
+            _messagesQuery = new MessagesQuery(_connection);
+            _postMessageCommand = new PostMessageCommand(_connection);
+            _messageAddedSubscription = new MessageAddedSubscription(_connection);
         }
     }
 }

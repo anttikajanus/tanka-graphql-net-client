@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,44 +32,11 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared
             if (request == null)
                 throw new ArgumentNullException(nameof(request));
 
+            // Project returned stream to TResult. Assumes that we are taking the first returned item from the
+            // returned data.
             var subscription = (await Connection.SubscribeAsync(request, token))
                 .Select(i => i.GetDataFieldAs<TResult>());
             return subscription;
         }
-
-        /// <summary>
-        /// Subscribe to a exposed GraphQL subscription. 
-        /// </summary>
-        /// <param name="request">Subscription parameters.</param>
-        /// <returns>Returns <see cref="IObservable{T}"/> that pushes notificatons to the subscribers when subscribed event occurs on the server.
-        /// The pushed type is the type returned by the subscription.
-        /// </returns>
-        //protected async Task<IObservable<TResult>> SubscribeAsync(QueryRequest request)
-        //{ 
-        //    if (request == null)
-        //        throw new ArgumentNullException(nameof(request));
-
-        //    // Use intermidiate subject to transform the result to the transfer object
-        //    var subject = new Subject<TResult>();
-        //    var serverSubscription = await Connection.SubscribeAsync(request);
-        //    serverSubscription.Subscribe(
-        //        // New event
-        //        result =>
-        //        {
-        //            TResult message = result.GetDataFieldAs<TResult>();
-        //            subject.OnNext(message);
-        //        },
-        //        // On error
-        //        error =>
-        //        {
-        //            subject.OnError(error);
-        //        },
-        //        // On completed
-        //        () =>
-        //        {
-        //            subject.OnCompleted();
-        //        });
-        //    return subject.AsObservable();
-        //}
     }
 }

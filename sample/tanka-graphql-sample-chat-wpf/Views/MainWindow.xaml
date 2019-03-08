@@ -4,45 +4,111 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
-        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         prism:ViewModelLocator.AutoWireViewModel="True"
         Title="{Binding Title}" 
+        mc:Ignorable="d"
         Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <ListView ItemsSource="{Binding Channels}"
-                  SelectedItem="{Binding SelectedChannel}"
-                  Grid.RowSpan="3">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <ListView ItemsSource="{Binding SelectedChannel.Messages}"
-                  Grid.Column="1" Grid.RowSpan="2"
-                  >
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Content}" />
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <materialDesign:ColorZone Grid.ColumnSpan="2" Height="48" Mode="PrimaryMid" Padding="16">
+            <TextBlock
+                Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Text="{Binding Title}">
+            </TextBlock>
+        </materialDesign:ColorZone>
+        <Grid
+            Background="White"
+            Grid.RowSpan="2" Grid.Row="1" >
 
-        <Grid  Grid.Row="2" Grid.Column="1">
-            <StackPanel Orientation="Horizontal" Margin="5">
-                <TextBox Text="{Binding SelectedChannel.NewMessageContent}" Margin="5" />
-                <Button Command="{Binding SelectedChannel.PostMessageCommand}" CommandParameter="{Binding SelectedChannel.NewMessageContent}" Content="post" Margin="5"/>
-            </StackPanel>
-            <Button Command="{Binding SelectedChannel.CloseChannelCommand}" Content="Close" VerticalContentAlignment="Stretch" HorizontalAlignment="Right"/>
+            <ListView ItemsSource="{Binding Channels}"
+                  SelectedItem="{Binding SelectedChannel}"
+                  VerticalAlignment="Stretch"
+                  MinWidth="248">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Width="210" Margin="8"/>
+                        </Grid>
+                        <!--<materialDesign:Card
+                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
+                        Padding="20" Margin="-3" >-->
+                            <!--<TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Width="210"/>-->
+                        <!--</materialDesign:Card>-->
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding SelectedChannel.Messages}" Margin="8">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <materialDesign:Card x:Name="card"
+                                             Padding="10"
+                                             Margin="56,8" HorizontalAlignment="Left">
+                                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
+                            </materialDesign:Card>
+                            <materialDesign:PackIcon Height="32" Margin="10" Width="32" x:Name="userIcon" Kind="AccountCircle" HorizontalAlignment="Left"/>
+                        </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsByMe}" Value="true" >
+                                    <Setter TargetName="card" Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter TargetName="userIcon" Property="HorizontalAlignment" Value="Right"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+        <Grid Grid.Row="2" Grid.Column="1" Margin="5" MinHeight="78">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox
+                Grid.Column="1"
+                Margin="5"
+                    Text="{Binding SelectedChannel.NewMessageContent}"
+                    Style="{StaticResource MaterialDesignFilledTextFieldTextBox}"
+                    VerticalAlignment="Top"
+                    AcceptsReturn="True"
+                    TextWrapping="Wrap"
+                    materialDesign:HintAssist.Hint="Type a message"
+                    IsEnabled="{Binding Path=IsChecked, ElementName=MaterialDesignFilledTextFieldTextBoxEnabledComboBox}" />
+            <Button
+                Margin="5"
+                Command="{Binding SelectedChannel.PostMessageCommand}" CommandParameter="{Binding SelectedChannel.NewMessageContent}" 
+                Grid.Column="2"
+                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                ToolTip="MaterialDesignFloatingActionMiniDarkButton">
+                <materialDesign:PackIcon
+                    Kind="Send"
+                    Height="24"
+                    Width="24" />
+            </Button>
+            <!--<Button Command="{Binding SelectedChannel.CloseChannelCommand}" Content="Close" VerticalContentAlignment="Stretch" HorizontalAlignment="Right"/>-->
         </Grid>
     </Grid>
 </Window>

@@ -1,16 +1,11 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Models;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Services;
 
@@ -26,7 +21,6 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
 
         IDisposable _messagesSubscription = null;
         private string _newMessageContent;
-
 
         public ChannelViewModel(Channel channel, IChatService chatService, IDispatcherContext dispatcher)
         {
@@ -59,55 +53,39 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
 
         public async Task ConnectAsync()
         {
-            try
-            {
-                await _chatService.PostMessageAsync($"Channel {_channel.Name} with id {_channel.Id} initialized.", _channel.Id);
+            var messages = (await _chatService.GetChannelMessagesAsync(_channel.Id))
+                 .Select(message => new MessageViewModel(message));
+            Messages = new ObservableCollection<MessageViewModel>(messages);
 
-                var messages = (await _chatService.GetChannelMessagesAsync(_channel.Id))
-                     .Select(message => new MessageViewModel(message));
-                Messages = new ObservableCollection<MessageViewModel>(messages);
-
-                var subscription = await _chatService.SubscribeToChannelMessagesAsync(_channel.Id, _subscriptionSource.Token);
-                _messagesSubscription = subscription
-                    .Subscribe(x =>
-                    {
+            var subscription = await _chatService.SubscribeToChannelMessagesAsync(_channel.Id, _subscriptionSource.Token);
+            _messagesSubscription = subscription
+                .Subscribe(x =>
+                {
+                        // Make sure that this is run in the UI thread. Could use ObserveOn instead
                         _dispatcher.Invoke(() =>
-                        {
+                    {
                             // Check if the message already exists
                             if (Messages.Any(m => m.Id == x.Id))
-                                return;
+                            return;
 
-                            Messages?.Add(new MessageViewModel(x));
-                        });
+                        Messages?.Add(new MessageViewModel(x));
                     });
-
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            
-        }
-
-        public async Task DisconnectAsync()
-        {
-            if (_subscriptionSource == null)
-                return;
-
-            _subscriptionSource.Cancel();
-            _messagesSubscription.Dispose();
-        }        
+                });
+        }  
 
         private async void PostMessage(string messageContent)
         {
             try
             {
-                var postedMessage = await _chatService.PostMessageAsync($"{messageContent} at {DateTime.Now}", _channel.Id);
-                // Check if the message already exists
+                if (!CanPostMessage(messageContent))
+                    return; 
+
+                var postedMessage = await _chatService.PostMessageAsync(messageContent, _channel.Id);
                 if (Messages.Any(m => m.Id == postedMessage.Id))
                     return;
 
                 Messages.Add(new MessageViewModel(postedMessage));
+                NewMessageContent = string.Empty;
             }
             catch (Exception ex)
             {
@@ -120,9 +98,9 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
             return true;
         }
 
-        private async void CloseChannel()
+        private void CloseChannel()
         {
-            if (_subscriptionSource == null)
+            if (!CanCloseChannel())
                 return;
 
             _subscriptionSource.Cancel();
