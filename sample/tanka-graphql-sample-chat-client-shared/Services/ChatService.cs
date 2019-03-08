@@ -16,33 +16,51 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
     public class ChatService : IChatService, IAsyncInitializer
     {
         private HubConnection _connection;   
-        private ChannelsQuery _channelsQuery;
-        private MessagesQuery _messagesQuery;
-        private PostMessageCommand _postMessageCommand;
-        private MessageAddedSubscription _messageAddedSubscription;
+        //private ChannelsQuery _channelsQuery;
+        //private MessagesQuery _messagesQuery;
+        //private PostMessageCommand _postMessageCommand;
+        //private MessageAddedSubscription _messageAddedSubscription;
 
         public async Task<List<Channel>> GetAvailableChatChannelsAsync()
         {
-            var result = await _channelsQuery.ExecuteAsync();
-            return result;
+            var channels = await Task.Run(async () =>
+            {
+                var channelsQuery = new ChannelsQuery(_connection);
+                var result = await channelsQuery.ExecuteAsync();
+                return result;
+            });
+            return channels;
         }
 
         public async Task<List<Message>> GetChannelMessagesAsync(int channelId)
         {
-            var result = await _messagesQuery.ExecuteAsync(channelId);
-            return result;
+            var messages = await Task.Run(async() => {
+                var messageQuery = new MessagesQuery(_connection);
+                var result = await messageQuery.ExecuteAsync(channelId);
+                return result;
+            });
+            return messages;
         }
 
         public async Task<Message> PostMessageAsync(string messageContent, int channelId)
         {
-            var result = await _postMessageCommand.ExecuteAsync(channelId, messageContent);
-            return result;
+            var message = await Task.Run(async () =>
+            {
+                var postMessagesCommand = new PostMessageCommand(_connection);
+                var result = await postMessagesCommand.ExecuteAsync(channelId, messageContent);
+                return result;
+            });
+            return message;
         }
 
         public async Task<IObservable<Message>> SubscribeToChannelMessagesAsync(int channelId, CancellationToken token)
         {
-            var result = await _messageAddedSubscription.ExecuteAsync(channelId, token);
-            return result;
+            var subscription = await Task.Run(async () => {
+                var messageAddedSubscription = new MessageAddedSubscription(_connection);
+                var result = await messageAddedSubscription.ExecuteAsync(channelId, token);
+                return result;
+            });
+            return subscription;
         }
 
         public async Task InitializeAsync(string serviceEndpoint)
@@ -52,10 +70,10 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
                 .Build();
             await _connection.StartAsync();
 
-            _channelsQuery = new ChannelsQuery(_connection);
-            _messagesQuery = new MessagesQuery(_connection);
-            _postMessageCommand = new PostMessageCommand(_connection);
-            _messageAddedSubscription = new MessageAddedSubscription(_connection);
+            //_channelsQuery = new ChannelsQuery(_connection);
+            //_messagesQuery = new MessagesQuery(_connection);
+            //_postMessageCommand = new PostMessageCommand(_connection);
+            //_messageAddedSubscription = new MessageAddedSubscription(_connection);
         }
     }
 }

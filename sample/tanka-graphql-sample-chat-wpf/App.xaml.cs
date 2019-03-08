@@ -14,7 +14,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf
             var shell = Container.Resolve<MainWindow>();
             if (shell.DataContext != null && shell.DataContext is IAsyncInitializer)
             {
-                (shell.DataContext as IAsyncInitializer).InitializeAsync("");
+                (shell.DataContext as IAsyncInitializer).InitializeAsync("https://localhost:5001/hubs/graphql");
             }
 
             return shell;

@@ -58,18 +58,18 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
                 IsInitializing = true;
 
                 // Connect to the server
-                await(_chatService as IAsyncInitializer).InitializeAsync("https://localhost:5001/hubs/graphql");
+                await(_chatService as IAsyncInitializer).InitializeAsync(serviceEndpoint);
 
                 // Query all available channels and create view models
                 var channels = (await _chatService.GetAvailableChatChannelsAsync())
                     .Select(c => new ChannelViewModel(c, _chatService, _dispatcherContext));
                 Channels = new ObservableCollection<ChannelViewModel>(channels);
-                
+                 
                 var tasks = Channels.Select(async channel =>
                 {
                     await channel.ConnectAsync();
-                    Debug.WriteLine($"Connected to: {channel.Name}");
                 });
+
                 await Task.WhenAll(tasks);
                 SelectedChannel = Channels.FirstOrDefault();
             }

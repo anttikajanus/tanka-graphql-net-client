@@ -16,6 +16,9 @@
         Title="{Binding Title}" 
         mc:Ignorable="d"
         Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVizConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -37,7 +40,6 @@
         <Grid
             Background="White"
             Grid.RowSpan="2" Grid.Row="1" >
-
             <ListView ItemsSource="{Binding Channels}"
                   SelectedItem="{Binding SelectedChannel}"
                   VerticalAlignment="Stretch"
@@ -47,11 +49,6 @@
                         <Grid>
                             <TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Width="210" Margin="8"/>
                         </Grid>
-                        <!--<materialDesign:Card
-                        materialDesign:ShadowAssist.ShadowDepth="Depth0"
-                        Padding="20" Margin="-3" >-->
-                            <!--<TextBlock Text="{Binding Name}" HorizontalAlignment="Stretch" Width="210"/>-->
-                        <!--</materialDesign:Card>-->
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -109,6 +106,25 @@
                     Width="24" />
             </Button>
             <!--<Button Command="{Binding SelectedChannel.CloseChannelCommand}" Content="Close" VerticalContentAlignment="Stretch" HorizontalAlignment="Right"/>-->
+        </Grid>
+        <Grid Grid.RowSpan="3" Grid.ColumnSpan="3" Visibility="{Binding IsInitializing, Converter={StaticResource boolToVizConverter}}">
+            <materialDesign:ColorZone HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#9999B0CD">
+                <Grid>
+                    <materialDesign:Card 
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Height="65" Width="65" UniformCornerRadius="50">
+                        <ProgressBar
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            Value="30"
+                            Height="40" Width="40"
+                            IsIndeterminate="True"  />
+                    </materialDesign:Card>
+                </Grid>
+            </materialDesign:ColorZone>
+            <TextBlock Text="Loading chat..." 
+                       Style="{DynamicResource MaterialDesignTitleTextBlock}" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       Margin="0,125,0,0" Foreground="White"/>
         </Grid>
     </Grid>
 </Window>

@@ -61,14 +61,12 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
             _messagesSubscription = subscription
                 .Subscribe(x =>
                 {
-                        // Make sure that this is run in the UI thread. Could use ObserveOn instead
-                        _dispatcher.Invoke(() =>
+                    // Make sure that this is run in the UI thread. Could use ObserveOn instead
+                    _dispatcher.Invoke(() =>
                     {
-                            // Check if the message already exists
-                            if (Messages.Any(m => m.Id == x.Id))
-                            return;
-
-                        Messages?.Add(new MessageViewModel(x));
+                        // Check if the message already exists
+                        if (!Messages.Any(m => m.Id == x.Id))
+                            Messages?.Add(new MessageViewModel(x));
                     });
                 });
         }  
@@ -81,11 +79,9 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
                     return; 
 
                 var postedMessage = await _chatService.PostMessageAsync(messageContent, _channel.Id);
-                if (Messages.Any(m => m.Id == postedMessage.Id))
-                    return;
-
-                Messages.Add(new MessageViewModel(postedMessage));
                 NewMessageContent = string.Empty;
+                if (!Messages.Any(m => m.Id == postedMessage.Id))
+                    Messages.Add(new MessageViewModel(postedMessage));
             }
             catch (Exception ex)
             {
