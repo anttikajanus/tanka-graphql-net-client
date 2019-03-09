@@ -17,7 +17,7 @@ variables:
   buildConfiguration: 'Release' # 'Release' or 'Debug'
   majorVersion: '0'
   minorVersion: '3'
-  patchVersion: '1'
+  patchVersion: '2'
   releaseBuildNumber : $(majorVersion).$(minorVersion).$(patchVersion)
 
 steps:
