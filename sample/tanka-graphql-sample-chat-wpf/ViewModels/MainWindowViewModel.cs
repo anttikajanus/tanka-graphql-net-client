@@ -75,11 +75,13 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
             }
             catch (HttpRequestException connectionException)
             {
+                // Todo
                 Debug.WriteLine(connectionException);
                 throw;
             }
             catch (Exception ex)
             {
+                // Todo
                 Debug.WriteLine(ex);
                 throw;
             }

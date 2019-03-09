@@ -16,10 +16,6 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
     public class ChatService : IChatService, IAsyncInitializer
     {
         private HubConnection _connection;   
-        //private ChannelsQuery _channelsQuery;
-        //private MessagesQuery _messagesQuery;
-        //private PostMessageCommand _postMessageCommand;
-        //private MessageAddedSubscription _messageAddedSubscription;
 
         public async Task<List<Channel>> GetAvailableChatChannelsAsync()
         {
@@ -69,11 +65,6 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
                 .WithUrl(serviceEndpoint)
                 .Build();
             await _connection.StartAsync();
-
-            //_channelsQuery = new ChannelsQuery(_connection);
-            //_messagesQuery = new MessagesQuery(_connection);
-            //_postMessageCommand = new PostMessageCommand(_connection);
-            //_messageAddedSubscription = new MessageAddedSubscription(_connection);
         }
     }
 }

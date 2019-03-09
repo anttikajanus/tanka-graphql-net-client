@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tanka.GraphQL.Net.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tanka.GraphQL.Net.Client", "..\src\tanka-graphql-net-client\Tanka.GraphQL.Net.Client.csproj", "{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tanka.GraphQL.Sample.Chat.Console", "tanka-graphql-sample-chat-console\Tanka.GraphQL.Sample.Chat.Console.csproj", "{64F3343C-C42E-44F9-8BF1-5AE8EBD5169D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C19A273C-342A-44BB-BF5E-F8F0E417FE6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64F3343C-C42E-44F9-8BF1-5AE8EBD5169D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64F3343C-C42E-44F9-8BF1-5AE8EBD5169D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64F3343C-C42E-44F9-8BF1-5AE8EBD5169D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64F3343C-C42E-44F9-8BF1-5AE8EBD5169D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

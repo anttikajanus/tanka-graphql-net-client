@@ -25,8 +25,7 @@ namespace Tanka.GraphQL
         /// </remarks>
         public static async Task<ExecutionResult> QueryAsync(this HubConnection connection, QueryRequest queryRequest, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>(
-                                        "query", queryRequest, cancellationToken);
+            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", queryRequest, cancellationToken);
 
             while (await channelReader.WaitToReadAsync(cancellationToken))
             {

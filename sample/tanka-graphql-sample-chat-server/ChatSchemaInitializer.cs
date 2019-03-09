@@ -14,19 +14,17 @@ namespace Tanka.GraphQL.Sample.Chat.Server
         public async Task InitializeAsync()
         {
             var idl = await SchemaLoader.LoadAsync();
-          //  await idl.InitializeAsync();
-
             var chat = new Domain.Chat();
 
             // Add some test data
             await chat.CreateChannelAsync(new InputChannel()
             {
-                Name = "Channel 1"
+                Name = "GraphQL - General"
             });
-            await chat.CreateChannelAsync(new InputChannel()
-            {
-                Name = "Channel 2"
-            });
+            //await chat.CreateChannelAsync(new InputChannel()
+            //{
+            //    Name = "Channel 2"
+            //});
 
             var service = new ChatResolverService(chat);
             var resolvers = new ChatResolvers(service);
