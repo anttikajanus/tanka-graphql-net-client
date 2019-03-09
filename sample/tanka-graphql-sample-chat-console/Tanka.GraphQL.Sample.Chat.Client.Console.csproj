@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <RootNamespace>Tanka.GraphQL.Sample.Chat.Console</RootNamespace>
+    <RootNamespace>Tanka.GraphQL.Sample.Chat.Client.Console</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

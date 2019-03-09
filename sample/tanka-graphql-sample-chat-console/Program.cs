@@ -7,7 +7,7 @@ using Tanka.GraphQL.Sample.Chat.Client.Shared.Services;
 using Cons = System.Console;
 
 
-namespace Tanka.GraphQL.Sample.Chat.Console
+namespace Tanka.GraphQL.Sample.Chat.Client.Console
 {
     public class Program
     {
