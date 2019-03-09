@@ -16,8 +16,9 @@ variables:
   # Build configuration settings
   buildConfiguration: 'Release' # 'Release' or 'Debug'
   majorVersion: '0'
-  minorVersion: '1'
+  minorVersion: '3'
   patchVersion: '1'
+  releaseBuildNumber : $(majorVersion).$(minorVersion).$(patchVersion)
 
 steps:
 - task: NuGetToolInstaller@0
@@ -58,13 +59,14 @@ steps:
   inputs:
     command: 'pack'
     searchPatternPack: '**/Tanka.GraphQL.Net.Client.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
-#    searchPatternPack: '**/*.csproj;!**/*.Tests.csproj' # Note: Use '!' instead of the '-:' for negations, documentation is wrong
     nobuild: true # The projects are already built in the previous step, so skip build here
     configurationToPack: '$(buildConfiguration)'
-    versioningScheme : byPrereleaseNumber
-    requestedMajorVersion: '$(majorVersion)'
-    requestedMinorVersion: '$(minorVersion)'
-    requestedPatchVersion: '$(patchVersion)'
+    versioningScheme : byEnvVar
+    versionEnvVar: releaseBuildNumber
+    # versioningScheme : byPrereleaseNumber
+    # requestedMajorVersion: '$(majorVersion)'
+    # requestedMinorVersion: '$(minorVersion)'
+    # requestedPatchVersion: '$(patchVersion)'
     outputDir: '$(Build.ArtifactStagingDirectory)/nuget/' # Add 'nuget' folder to the path to be explicit where the files are, helps push command to find the packages
 
 - task: DotNetCoreCLI@2
