@@ -136,7 +136,8 @@ var queryRequest = new QueryRequest()
         }
 };
 
-var serverSubscription = await connection.SubscribeAsync(request);
+var subscriptionSource = new CancellationTokenSource();
+var serverSubscription = await connection.SubscribeAsync(request, subscriptionSource);
 serverSubscription.Subscribe(
                 // On new message added
                 result =>
@@ -154,4 +155,7 @@ serverSubscription.Subscribe(
                 {
                    //No more messages coming
                 });
+                
+// Cancelling the subscription                
+subscriptionSource.Cancel();
 ```
