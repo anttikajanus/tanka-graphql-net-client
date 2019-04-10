@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Models;
@@ -26,12 +25,13 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries.Subscriptions
         /// <returns>Returns <see cref="IObservable{T}"/> that pushes notificatons to the subscribers when new messages were added.</returns>
         public async Task<IObservable<Message>> ExecuteAsync(int channelId, CancellationToken token)
         {
-            var channelMessagesSubsriptionGQL = @"subscription MessageAdded($channelId: Int!) {
-                messageAdded(channelId: $channelId) {
-                  id
-                  content
-                }
-            }";
+            var channelMessagesSubsriptionGQL = 
+                @"subscription MessageAdded($channelId: Int!) {
+                    messageAdded(channelId: $channelId) {
+                      id
+                      content
+                    }
+                }";
 
             var queryRequest = new QueryRequest()
             {

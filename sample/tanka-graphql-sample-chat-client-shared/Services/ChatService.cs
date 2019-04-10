@@ -30,7 +30,8 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
 
         public async Task<List<Message>> GetChannelMessagesAsync(int channelId)
         {
-            var messages = await Task.Run(async() => {
+            var messages = await Task.Run(async() => 
+            {
                 var messageQuery = new MessagesQuery(_connection);
                 var result = await messageQuery.ExecuteAsync(channelId);
                 return result;
@@ -51,7 +52,8 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
 
         public async Task<IObservable<Message>> SubscribeToChannelMessagesAsync(int channelId, CancellationToken token)
         {
-            var subscription = await Task.Run(async () => {
+            var subscription = await Task.Run(async () => 
+            {
                 var messageAddedSubscription = new MessageAddedSubscription(_connection);
                 var result = await messageAddedSubscription.ExecuteAsync(channelId, token);
                 return result;

@@ -110,6 +110,15 @@ namespace Tanka.GraphQL
             var result = GetFieldAs<TFieldType>(Data, key);
             return result;
         }
+        
+        /// <summary>
+        /// Returns <see cref="ExecutionResult"/> as a json string.
+        /// </summary>
+        /// <returns>Return object as a json.</returns>
+        public string ToJson()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
 
         private TFieldType GetFieldAs<TFieldType>(IDictionary<string, object> dictinary, string key)
         {
@@ -124,15 +133,6 @@ namespace Tanka.GraphQL
 
             var result = JsonConvert.DeserializeObject<TFieldType>(value);
             return result;
-        }
-
-        /// <summary>
-        /// Returns <see cref="ExecutionResult"/> as a json string.
-        /// </summary>
-        /// <returns>Return object as a json.</returns>
-        public string ToJson()
-        {
-            return JsonConvert.SerializeObject(this);
         }
     }
 }
