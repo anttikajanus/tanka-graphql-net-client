@@ -5,7 +5,9 @@
     <RootNamespace>Tanka.GraphQL</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
   <!-- Build metadata -->
   <PropertyGroup>
     <Authors>Antti kajanus</Authors>
