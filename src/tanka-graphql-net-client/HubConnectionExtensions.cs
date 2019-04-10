@@ -23,7 +23,8 @@ namespace Tanka.GraphQL
         /// Use <see cref="QueryAsync(HubConnection, QueryRequest)"/> for queries and mutations and use 
         /// <see cref="SubscribeAsync(HubConnection, QueryRequest)"/> for subscriptions.
         /// </remarks>
-        public static async Task<ExecutionResult> QueryAsync(this HubConnection connection, QueryRequest queryRequest, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<ExecutionResult> QueryAsync(
+            this HubConnection connection, QueryRequest queryRequest, CancellationToken cancellationToken = default)
         {
             var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", queryRequest, cancellationToken);
 
@@ -51,7 +52,8 @@ namespace Tanka.GraphQL
         /// Use <see cref="QueryAsync(HubConnection, QueryRequest)"/> for queries and mutations and use 
         /// <see cref="SubscribeAsync(HubConnection, QueryRequest)"/> for subscriptions.
         /// </remarks>
-        public static async Task<IObservable<ExecutionResult>> SubscribeAsync(this HubConnection connection, QueryRequest query, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<IObservable<ExecutionResult>> SubscribeAsync(
+            this HubConnection connection, QueryRequest query, CancellationToken cancellationToken = default)
         {
             var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", query, cancellationToken);
             var subject = new Subject<ExecutionResult>();
@@ -68,7 +70,7 @@ namespace Tanka.GraphQL
                         }
                     }
                 }
-                catch (OperationCanceledException oce)
+                catch (OperationCanceledException)
                 {
                     // Operation cancelled, eat exception here and close the stream after this
                 }

@@ -16,10 +16,9 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
         private readonly IChatService _chatService;
         private readonly IDispatcherContext _dispatcher;
         private readonly Channel _channel;
+        private IDisposable _messagesSubscription = null;
         private ObservableCollection<MessageViewModel> _messages;
-        private readonly CancellationTokenSource _subscriptionSource;
-
-        IDisposable _messagesSubscription = null;
+        private CancellationTokenSource _subscriptionSource;
         private string _newMessageContent;
 
         public ChannelViewModel(Channel channel, IChatService chatService, IDispatcherContext dispatcher)
@@ -30,14 +29,16 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
 
             PostMessageCommand = new DelegateCommand<string>(PostMessage, CanPostMessage);
             CloseChannelCommand = new DelegateCommand(CloseChannel, CanCloseChannel);
-
-            _subscriptionSource = new CancellationTokenSource();
+            ConnectChannelCommand = new DelegateCommand(ConnectChannel, CanConnectChannel);
         }
 
         public string Name => _channel.Name;
 
         public DelegateCommand<string> PostMessageCommand { get; }
+
         public DelegateCommand CloseChannelCommand { get; }
+
+        public DelegateCommand ConnectChannelCommand { get; }
 
         public ObservableCollection<MessageViewModel> Messages
         {
@@ -53,9 +54,14 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
 
         public async Task ConnectAsync()
         {
+            _subscriptionSource = new CancellationTokenSource();
             var messages = (await _chatService.GetChannelMessagesAsync(_channel.Id))
-                 .Select(message => new MessageViewModel(message));
-            Messages = new ObservableCollection<MessageViewModel>(messages);
+                .Select(message => new MessageViewModel(message));
+            if (Messages == null)
+                Messages = new ObservableCollection<MessageViewModel>(messages);
+            else
+                foreach (var message in messages.Where(m => !Messages.Any(x => x.Id == m.Id)))
+                    Messages.Add(message);
 
             var subscription = await _chatService.SubscribeToChannelMessagesAsync(_channel.Id, _subscriptionSource.Token);
             _messagesSubscription = subscription
@@ -64,29 +70,21 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
                     // Make sure that this is run in the UI thread. Could use ObserveOn instead
                     _dispatcher.Invoke(() =>
                     {
-                        // Check if the message already exists
                         if (!Messages.Any(m => m.Id == x.Id))
                             Messages?.Add(new MessageViewModel(x));
                     });
                 });
-        }  
+        }
 
         private async void PostMessage(string messageContent)
         {
-            try
-            {
-                if (!CanPostMessage(messageContent))
-                    return; 
+            if (!CanPostMessage(messageContent))
+                return;
 
-                var postedMessage = await _chatService.PostMessageAsync(messageContent, _channel.Id);
-                NewMessageContent = string.Empty;
-                if (!Messages.Any(m => m.Id == postedMessage.Id))
-                    Messages.Add(new MessageViewModel(postedMessage));
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            var postedMessage = await _chatService.PostMessageAsync(messageContent, _channel.Id);
+            NewMessageContent = string.Empty;
+            if (!Messages.Any(m => m.Id == postedMessage.Id))
+                Messages.Add(new MessageViewModel(postedMessage));
         }
 
         private bool CanPostMessage(string messageContent)
@@ -102,11 +100,29 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
             _subscriptionSource.Cancel();
             _messagesSubscription.Dispose();
             CloseChannelCommand.RaiseCanExecuteChanged();
+            ConnectChannelCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanCloseChannel()
         {
-            return !_subscriptionSource.IsCancellationRequested;
+            return !_subscriptionSource.IsCancellationRequested && _messagesSubscription != null;
+        }
+
+        private async void ConnectChannel()
+        {
+            if (!CanConnectChannel())
+                return;
+
+            await ConnectAsync();
+            CloseChannelCommand.RaiseCanExecuteChanged();
+            ConnectChannelCommand.RaiseCanExecuteChanged();
+        }
+
+        private bool CanConnectChannel()
+        {
+            if (_subscriptionSource == null || _subscriptionSource.IsCancellationRequested)
+                return true;
+            return false;
         }
     }
 }

@@ -64,13 +64,10 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
                 var channels = (await _chatService.GetAvailableChatChannelsAsync())
                     .Select(c => new ChannelViewModel(c, _chatService, _dispatcherContext));
                 Channels = new ObservableCollection<ChannelViewModel>(channels);
-                 
-                var tasks = Channels.Select(async channel =>
-                {
-                    await channel.ConnectAsync();
-                });
 
+                var tasks = Channels.Select(async channel => await channel.ConnectAsync());
                 await Task.WhenAll(tasks);
+
                 SelectedChannel = Channels.FirstOrDefault();
             }
             catch (HttpRequestException connectionException)

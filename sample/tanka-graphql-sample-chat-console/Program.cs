@@ -6,7 +6,6 @@ using Tanka.GraphQL.Sample.Chat.Client.Shared;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Services;
 using Cons = System.Console;
 
-
 namespace Tanka.GraphQL.Sample.Chat.Client.Console
 {
     public class Program
@@ -14,7 +13,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Console
         private static ChatService _chatService;
         private static List<IDisposable> _channelSubscriptions;
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             _channelSubscriptions = new List<IDisposable>();
             _chatService = new ChatService();
@@ -24,10 +23,11 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Console
             Cons.WriteLine("Press any key to close the console.");
             Cons.WriteLine("--------------------------------------------------------------------------------------------");
             Cons.WriteLine();
-            ConnectChatAsync().GetAwaiter().GetResult();
+            await ConnectChatAsync();
             Cons.ReadKey();
+            Cons.WriteLine("");
             Cons.WriteLine("Shutting down...");
-            DisconnectChatAsync().GetAwaiter().GetResult();
+            await DisconnectChatAsync();
         }
 
         private static async Task ConnectChatAsync()
@@ -35,7 +35,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Console
             try
             {
                 // Connect to the server
-                await (_chatService as IAsyncInitializer).InitializeAsync("https://localhost:5001/hubs/graphql");
+                await (_chatService as IAsyncInitializer).InitializeAsync("https://tanka-chat.azurewebsites.net/hubs/graphql");
 
                 // Get all channels and log them out
                 var channels = await _chatService.GetAvailableChatChannelsAsync();

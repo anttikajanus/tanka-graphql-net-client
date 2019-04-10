@@ -7,7 +7,6 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
     public class MessageViewModel : BindableBase
     {
         private readonly Message _message;
-        private bool _isByMe;
 
         public MessageViewModel(Message message)
         {
@@ -15,6 +14,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
         }
 
         public string Content => _message.Content;
+
         public int Id => _message.Id;
     }
 }

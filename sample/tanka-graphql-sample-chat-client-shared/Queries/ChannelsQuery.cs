@@ -22,11 +22,12 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries
         /// <returns>Returns all the channels from the service.</returns>
         public async Task<List<Channel>> ExecuteAsync()
         {
-            var channelsGQL = @"{channels {
-                id
-                name
-              }
-            }";
+            var channelsGQL =
+                @"{channels {
+                    id
+                    name
+                  }
+                }";
 
             var queryRequest = new QueryRequest()
             {
