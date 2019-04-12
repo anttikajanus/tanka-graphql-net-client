@@ -8,7 +8,7 @@ This library provides easy to use cross-platform client API for [Tanka GraphQL e
 
 ## Features
 
-- Execute queries, mutations and subsriptions using SignalR HubConnection
+- Execute queries, mutations and subscriptions using SignalR HubConnection
 - Supports GraphQL validation and tracing
 - Leverage power of SignalR communication techniques (WebSockets, Server-Sent Events, Long Polling) 
 
