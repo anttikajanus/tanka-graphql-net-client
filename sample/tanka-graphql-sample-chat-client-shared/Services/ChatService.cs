@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Models;
@@ -13,7 +14,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
     /// <summary>
     /// Provides chat functionality in one place.
     /// </summary>
-    public class ChatService : IChatService, IAsyncInitializer
+    public class ChatService : IChatService, IAuthenticatedInitializer
     {
         private HubConnection _connection;   
 
@@ -61,11 +62,16 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
             return subscription;
         }
 
-        public async Task InitializeAsync(string serviceEndpoint)
+        public async Task InitializeAsync(string serviceEndpoint, string identityToken)
         {
             _connection = new HubConnectionBuilder()
-                .WithUrl(serviceEndpoint)
-                .Build();
+                .WithUrl( 
+                    serviceEndpoint, options => {
+                            options.AccessTokenProvider = async () => {
+                                return identityToken;
+                            };
+                    }).
+                Build();
             await _connection.StartAsync();
         }
     }

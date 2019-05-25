@@ -1,8 +1,10 @@
 ﻿using Prism.Ioc;
 using Prism.Ninject;
+using System.Configuration;
 using System.Windows;
 using Tanka.GraphQL.Sample.Chat.Client.Shared;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Services;
+using Tanka.GraphQL.Sample.Chat.Client.Wpf.Services;
 using Tanka.GraphQL.Sample.Chat.Client.Wpf.Views;
 
 namespace Tanka.GraphQL.Sample.Chat.Client.Wpf
@@ -14,7 +16,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf
             var shell = Container.Resolve<MainWindow>();
             if (shell.DataContext != null && shell.DataContext is IAsyncInitializer)
             {
-                (shell.DataContext as IAsyncInitializer).InitializeAsync("https://tanka-chat.azurewebsites.net/hubs/graphql");
+                (shell.DataContext as IAsyncInitializer).InitializeAsync(ConfigurationManager.AppSettings["Tanka:SignalRHubUrl"]);
             }
 
             return shell;
@@ -22,6 +24,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
             containerRegistry.RegisterSingleton<IDispatcherContext, WpfDispatcherContext>();
             containerRegistry.RegisterSingleton<IChatService, ChatService>();
         }

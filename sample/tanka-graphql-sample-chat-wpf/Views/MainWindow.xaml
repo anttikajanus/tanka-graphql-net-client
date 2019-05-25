@@ -74,7 +74,21 @@
                                 <materialDesign:Card x:Name="card"
                                              Padding="10"
                                              Margin="56,8" HorizontalAlignment="Left">
-                                    <TextBlock Text="{Binding Content}" TextWrapping="Wrap"/>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Margin="0,0,0,5" Style="{StaticResource MaterialDesignCaptionTextBlock}">
+                                            <Run Text="@"/>
+                                            <Run Text="{Binding From, Mode=OneWay}"/>
+                                            <Run Text="-"/>
+                                            <Run Text="{Binding Timestamp, Mode=OneWay, StringFormat={}{0:F}}"/>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="1" Text="{Binding Content, Mode=OneWay}" 
+                                                   Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                                   TextWrapping="Wrap"/>
+                                    </Grid>
                                 </materialDesign:Card>
                                 <materialDesign:PackIcon Height="32" Margin="10" Width="32" Kind="AccountCircle" HorizontalAlignment="Left"/>
                             </Grid>
