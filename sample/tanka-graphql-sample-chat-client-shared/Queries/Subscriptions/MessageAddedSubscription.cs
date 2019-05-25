@@ -25,11 +25,14 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries.Subscriptions
         /// <returns>Returns <see cref="IObservable{T}"/> that pushes notificatons to the subscribers when new messages were added.</returns>
         public async Task<IObservable<Message>> ExecuteAsync(int channelId, CancellationToken token)
         {
-            var channelMessagesSubsriptionGQL = 
+            var channelMessagesSubsriptionGQL =
                 @"subscription MessageAdded($channelId: Int!) {
                     messageAdded(channelId: $channelId) {
                       id
+                      channelId
                       content
+                      timestamp
+                      from
                     }
                 }";
 

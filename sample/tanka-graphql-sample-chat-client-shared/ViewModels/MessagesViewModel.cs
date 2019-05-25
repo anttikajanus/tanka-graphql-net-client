@@ -16,5 +16,11 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
         public string Content => _message.Content;
 
         public int Id => _message.Id;
+
+        public DateTimeOffset? Timestamp => _message.Timestamp;
+
+        public int ChannelId => _message.ChannelId;
+
+        public string From => _message.From;
     }
 }

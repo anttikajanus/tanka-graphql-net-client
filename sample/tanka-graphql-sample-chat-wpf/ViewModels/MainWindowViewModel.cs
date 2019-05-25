@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -8,12 +9,14 @@ using System.Threading.Tasks;
 using Tanka.GraphQL.Sample.Chat.Client.Shared;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.Services;
 using Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels;
+using Tanka.GraphQL.Sample.Chat.Client.Wpf.Services;
 
 namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
 {
     public class MainWindowViewModel : BindableBase, IAsyncInitializer
     {
         private readonly IChatService _chatService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly IDispatcherContext _dispatcherContext;
         private string _title = "Tanka Chat for WPF sample";
         private bool _isInitializing = false;
@@ -21,9 +24,10 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
         private ObservableCollection<ChannelViewModel> _channels;
         private ChannelViewModel _selectedChannel;
 
-        public MainWindowViewModel(IChatService chatService, IDispatcherContext dispatcherContext)
+        public MainWindowViewModel(IChatService chatService, IAuthenticationService authenticationService, IDispatcherContext dispatcherContext)
         {
             _chatService = chatService ?? throw new ArgumentNullException(nameof(chatService));
+            _authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             _dispatcherContext = dispatcherContext ?? throw new ArgumentNullException(nameof(dispatcherContext));
         }
 
@@ -56,9 +60,17 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
             try
             {
                 IsInitializing = true;
+                var loginResult = await _authenticationService.AuthenticateAsync();
+                if (loginResult.IsError)
+                {
+                    Debug.WriteLine($"Error occured on authentication. Error {0}", loginResult.Error);
+                    // TODO
+                }
+
+                var claims = loginResult.User.Claims;
 
                 // Connect to the server
-                await(_chatService as IAsyncInitializer).InitializeAsync(serviceEndpoint);
+                await(_chatService as IAuthenticatedInitializer).InitializeAsync(serviceEndpoint, loginResult.AccessToken);
 
                 // Query all available channels and create view models
                 var channels = (await _chatService.GetAvailableChatChannelsAsync())
