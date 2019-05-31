@@ -18,5 +18,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Models
         public int ChannelId { get; set; }
 
         public string From { get; set; }
+
+        public string ProfileUrl { get; set; }
     }
 }

@@ -31,6 +31,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries
                       content
                       timestamp
                       from
+                      profileUrl
                     }
                 }";
 

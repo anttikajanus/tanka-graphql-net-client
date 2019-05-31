@@ -1,0 +1,49 @@
+﻿<Window x:Class="Tanka.GraphQL.Sample.Chat.Client.Wpf.AuthenticationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prism="http://prismlibrary.com/"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:converters="clr-namespace:Tanka.GraphQL.Sample.Chat.Client.Wpf.Converters"
+        xmlns:toolkitWebview="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls.WebView"
+        xmlns:toolkit="clr-namespace:Microsoft.Toolkit.Wpf.UI.Controls;assembly=Microsoft.Toolkit.Wpf.UI.Controls"
+        xmlns:host="clr-namespace:Microsoft.Toolkit.Wpf.UI.XamlHost;assembly=Microsoft.Toolkit.Wpf.UI.Controls"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Login"
+        mc:Ignorable="d"
+        Height="810" Width="600">
+    <Window.Resources>
+        <converters:InvertableBooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid Margin="10" Background="Gray">
+        <!--<toolkit:WebView x:Name="browser"/>-->
+        <ContentControl x:Name="MainContent"/>
+        
+        <Grid x:Name="BusyIndication" Margin="-10">
+            <materialDesign:ColorZone HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#9999B0CD">
+                <Grid>
+                    <materialDesign:Card 
+                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Height="65" Width="65" UniformCornerRadius="50">
+                        <ProgressBar
+                            Style="{StaticResource MaterialDesignCircularProgressBar}"
+                            Value="30"
+                            Height="40" Width="40"
+                            IsIndeterminate="True"  />
+                    </materialDesign:Card>
+                </Grid>
+            </materialDesign:ColorZone>
+            <TextBlock Text="Connecting..." 
+                       Style="{DynamicResource MaterialDesignTitleTextBlock}" 
+                       HorizontalAlignment="Center" VerticalAlignment="Center" 
+                       Margin="0,125,0,0" Foreground="White"/>
+        </Grid>
+    </Grid>
+</Window>

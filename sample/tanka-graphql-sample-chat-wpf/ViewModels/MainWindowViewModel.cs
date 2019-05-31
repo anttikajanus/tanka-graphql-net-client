@@ -61,14 +61,6 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
             {
                 IsInitializing = true;
                 var loginResult = await _authenticationService.AuthenticateAsync();
-                if (loginResult.IsError)
-                {
-                    Debug.WriteLine($"Error occured on authentication. Error {0}", loginResult.Error);
-                    // TODO
-                }
-
-                var claims = loginResult.User.Claims;
-
                 // Connect to the server
                 await(_chatService as IAuthenticatedInitializer).InitializeAsync(serviceEndpoint, loginResult.AccessToken);
 
