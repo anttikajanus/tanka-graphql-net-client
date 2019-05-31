@@ -22,5 +22,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.ViewModels
         public int ChannelId => _message.ChannelId;
 
         public string From => _message.From;
+
+        public string ProfileUrl => _message.ProfileUrl;
     }
 }

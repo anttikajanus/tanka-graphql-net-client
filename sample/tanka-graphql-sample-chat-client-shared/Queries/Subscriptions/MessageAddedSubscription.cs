@@ -33,6 +33,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries.Subscriptions
                       content
                       timestamp
                       from
+                      profileUrl
                     }
                 }";
 

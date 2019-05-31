@@ -26,8 +26,12 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries.Commands
             var postMessageMutationGQL =
                 @"mutation PostMessage($channelId: Int!, $message: InputMessage) {
                     postMessage(channelId: $channelId, message: $message) {
-                      id
-                      content
+                     id
+                     channelId
+                     content
+                     timestamp
+                     from
+                     profileUrl
                   }
                 }";
 

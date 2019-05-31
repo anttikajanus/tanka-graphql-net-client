@@ -19,6 +19,7 @@
         Height="450" Width="800">
     <Window.Resources>
         <converters:InvertableBooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <converters:ProfilePictureConverter x:Key="profilePictureConverter"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -80,7 +81,6 @@
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0" Margin="0,0,0,5" Style="{StaticResource MaterialDesignCaptionTextBlock}">
-                                            <Run Text="@"/>
                                             <Run Text="{Binding From, Mode=OneWay}"/>
                                             <Run Text="-"/>
                                             <Run Text="{Binding Timestamp, Mode=OneWay, StringFormat={}{0:F}}"/>
@@ -90,7 +90,11 @@
                                                    TextWrapping="Wrap"/>
                                     </Grid>
                                 </materialDesign:Card>
-                                <materialDesign:PackIcon Height="32" Margin="10" Width="32" Kind="AccountCircle" HorizontalAlignment="Left"/>
+                                <Ellipse Height="32" Width="32" Margin="10" HorizontalAlignment="Left">
+                                    <Ellipse.Fill> 
+                                        <ImageBrush ImageSource="{Binding ProfileUrl, Converter={StaticResource profilePictureConverter}}" />
+                                    </Ellipse.Fill>
+                                </Ellipse>
                             </Grid>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
