@@ -1,6 +1,5 @@
 ﻿using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -61,6 +60,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.ViewModels
             {
                 IsInitializing = true;
                 var loginResult = await _authenticationService.AuthenticateAsync();
+                
                 // Connect to the server
                 await(_chatService as IAuthenticatedInitializer).InitializeAsync(serviceEndpoint, loginResult.AccessToken);
 
