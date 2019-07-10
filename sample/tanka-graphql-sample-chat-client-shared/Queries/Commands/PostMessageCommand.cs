@@ -24,7 +24,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Queries.Commands
         public async Task<Message> ExecuteAsync(int channelId, string message)
         {
             var postMessageMutationGQL =
-                @"mutation PostMessage($channelId: Int!, $message: InputMessage) {
+                @"mutation PostMessage($channelId: Int!, $message: InputMessage!) {
                     postMessage(channelId: $channelId, message: $message) {
                      id
                      channelId
