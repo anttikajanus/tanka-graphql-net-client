@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,13 +43,21 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared.Services
 
         public async Task<Message> PostMessageAsync(string messageContent, int channelId)
         {
-            var message = await Task.Run(async () =>
+            try
             {
-                var postMessagesCommand = new PostMessageCommand(_connection);
-                var result = await postMessagesCommand.ExecuteAsync(channelId, messageContent);
-                return result;
-            });
-            return message;
+                var message = await Task.Run(async () =>
+                {
+                    var postMessagesCommand = new PostMessageCommand(_connection);
+                    var result = await postMessagesCommand.ExecuteAsync(channelId, messageContent);
+                    return result;
+                });
+                return message;
+            }
+            catch (GraphQLException graphQLException)
+            {
+                Debug.WriteLine(graphQLException);
+                throw;
+            }
         }
 
         public async Task<IObservable<Message>> SubscribeToChannelMessagesAsync(int channelId, CancellationToken token)

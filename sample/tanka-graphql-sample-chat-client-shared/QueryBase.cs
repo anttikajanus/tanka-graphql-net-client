@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Tanka.GraphQL.Sample.Chat.Client.Shared.Queries;
 
 namespace Tanka.GraphQL.Sample.Chat.Client.Shared
 {
@@ -39,6 +42,17 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Shared
                 throw new ArgumentNullException(nameof(request));
 
             var result = await Connection.QueryAsync(request);
+            if (result.Errors != null && result.Errors.Any())
+            {
+                var messageBuilder = new StringBuilder();
+                messageBuilder.AppendLine($"GraphQL query returned {result.Errors.Count()} errors:");
+                foreach (var error in result.Errors)
+                {
+                    messageBuilder.AppendLine(error.Message);
+                }
+                throw new GraphQLException(messageBuilder.ToString());
+            }
+
             var data = result.GetDataFieldAs<TResult>();
             return data;
         }

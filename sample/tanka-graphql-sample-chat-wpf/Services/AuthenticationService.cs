@@ -35,6 +35,7 @@ namespace Tanka.GraphQL.Sample.Chat.Client.Wpf.Services
             var loginResult = await _client.LoginAsync(extraParameters: extraParameters);
             if (loginResult.IsError)
             {
+                // Handle errors on the caller.
                 Debug.WriteLine(loginResult.Error);
             }
 
