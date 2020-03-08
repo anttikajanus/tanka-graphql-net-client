@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Tanka.GraphQL
 {
     /// <summary>
-    /// Represents the location where the <see cref="GraphQLError"/> has been found
+    /// Represents the location where the <see cref="ExecutionError"/> has been found
     /// </summary>
-    public class Location : IEquatable<Location>
+    public sealed class Location : IEquatable<Location>
     {
         /// <summary>
         /// The Column

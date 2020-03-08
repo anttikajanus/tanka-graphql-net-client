@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Tanka.GraphQL
 {
@@ -12,7 +12,7 @@ namespace Tanka.GraphQL
     {
         private IDictionary<string, object> _data;
         private IDictionary<string, object> _extensions;
-        private IEnumerable<GraphQLError> _errors;
+        private IEnumerable<ExecutionError> _errors;
 
         /// <summary>
         /// Returned data as a dictionary. The key is the operation name of the query.
@@ -39,7 +39,6 @@ namespace Tanka.GraphQL
         /// Tanka GraphQL execution engine might return a tracing information to the client using special "tracing" key. This data is following
         /// Apollo tracing format that is exposed as a <see cref="Tracing.TraceExtensionRecord"/> object. 
         /// </remarks>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public IDictionary<string, object> Extensions
         {
             get => _extensions;
@@ -61,8 +60,7 @@ namespace Tanka.GraphQL
         /// <remarks>
         /// Note that the repsonse might return both <see cref="Data"/> and <see cref="Errors"/> in the same result.
         /// </remarks>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public IEnumerable<GraphQLError> Errors
+        public IEnumerable<ExecutionError> Errors
         {
             get => _errors;
             set
@@ -111,28 +109,46 @@ namespace Tanka.GraphQL
             return result;
         }
         
-        /// <summary>
-        /// Returns <see cref="ExecutionResult"/> as a json string.
-        /// </summary>
-        /// <returns>Return object as a json.</returns>
-        public string ToJson()
+        private TFieldType GetFieldAs<TFieldType>(IDictionary<string, object> dictionary, string key)
         {
-            return JsonConvert.SerializeObject(this);
-        }
-
-        private TFieldType GetFieldAs<TFieldType>(IDictionary<string, object> dictinary, string key)
-        {
-            var value = string.Empty;
+            string value;
             if (string.IsNullOrEmpty(key) || string.IsNullOrWhiteSpace(key))
-                value = dictinary.First().Value.ToString();
+                value = (string)dictionary.First().Value;
             else
-                value = dictinary[key].ToString();
+                value = dictionary[key].ToString();
 
-            if (string.IsNullOrEmpty(value))
-                throw new Exception("test this... since errors are returned but also this key is there with null value.");
+            if (value == null)
+                throw new FormatException("test this... since errors are returned but also this key is there with null value.");
 
-            var result = JsonConvert.DeserializeObject<TFieldType>(value);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+           
+            var result = JsonSerializer.Deserialize<TFieldType>(value, options);
+            //var x = dictionary.First().Value;
+            //foreach (var item in x as IList<object>)
+            //{
+            //    Debug.WriteLine(item.ToString());
+            //    Debug.WriteLine(item);
+            //    //foreach (var item2 in item)
+            //    //{
+
+            //    //}
+            //}
+
+
+            //Debug.WriteLine(value.GetType().ToString());
+            //foreach (var item in value as List<object>)
+            //{
+            //    Debug.WriteLine(item.GetType().ToString());
+            //    Debug.WriteLine(item);
+
+            //}
             return result;
+            //var result = JsonSerializer.Deserialize<TFieldType>(value);
+            //var result = JsonConvert.DeserializeObject<TFieldType>(value);
+           // return result;
         }
     }
 }

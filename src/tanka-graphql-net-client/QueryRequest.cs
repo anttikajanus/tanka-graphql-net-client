@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using Tanka.GraphQL.Utilities;
+﻿using System.Collections.Generic;
 
 namespace Tanka.GraphQL
 {
@@ -28,7 +26,6 @@ namespace Tanka.GraphQL
         /// In GraphQL dynamic variables (or parameters) are define out of the query as a separate dictionary. 
         /// Read more from https://graphql.github.io/learn/queries/#variables
         /// </remarks>
-        [JsonConverter(typeof(VariableConverter))]
         public Dictionary<string, object> Variables { get; set; }
 
         /// <summary>   
@@ -47,7 +44,6 @@ namespace Tanka.GraphQL
         /// Fugu GraphQL execution engine uses <see cref="Extensions"/> to deliver arbitary information as part of your queries. 
         /// This is not strigtly defined int he GraphQL spec but is used by many GraphQL implementations as a community standard.
         /// </remarks>
-        [JsonConverter(typeof(VariableConverter))]
         public Dictionary<string, object> Extensions { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace Tanka.GraphQL
         /// Executes a provided <see cref="QueryRequest"/> using the <see cref="HubConnection"/>.
         /// </summary>
         /// <param name="connection">SignalR connection that is used to execute the query.</param>
-        /// <param name="queryRequest">Query that will be executed.</param>
+        /// <param name="query">Query that will be executed.</param>
         /// <param name="cancellationToken">Cancellation token to cancel the query.</param>
         /// <returns>Return <see cref="GraphQLExecutionResult"/> that contains the execution result from the service.</returns>
         /// <remarks>
@@ -24,19 +24,28 @@ namespace Tanka.GraphQL
         /// <see cref="SubscribeAsync(HubConnection, QueryRequest)"/> for subscriptions.
         /// </remarks>
         public static async Task<ExecutionResult> QueryAsync(
-            this HubConnection connection, QueryRequest queryRequest, CancellationToken cancellationToken = default)
+            this HubConnection connection, QueryRequest query, CancellationToken cancellationToken = default)
         {
-            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", queryRequest, cancellationToken);
-
-            while (await channelReader.WaitToReadAsync(cancellationToken))
+            // read from the hub using async streams
+            var stream = connection.StreamAsync<ExecutionResult>("query", query, cancellationToken);
+            await foreach (var result in stream)
             {
-                while (channelReader.TryRead(out var result))
-                {
-                    return result;
-                }
+                return result;
             }
 
-            throw new Exception($"Query operation failed to be executed. Operation name = {queryRequest.OperationName}, Query = {queryRequest.Query}");
+            //Todo: Create new exception type for graphql exceptions
+            throw new Exception($"Query operation failed to be executed. Operation name = {query.OperationName}, Query = {query.Query}");
+
+            //var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", queryRequest, cancellationToken);
+
+                //while (await channelReader.WaitToReadAsync(cancellationToken))
+                //{
+                //    while (channelReader.TryRead(out var result))
+                //    {
+                //        return result;
+                //    }
+                //}
+
         }
 
         /// <summary>
@@ -55,20 +64,25 @@ namespace Tanka.GraphQL
         public static async Task<IObservable<ExecutionResult>> SubscribeAsync(
             this HubConnection connection, QueryRequest query, CancellationToken cancellationToken = default)
         {
-            var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", query, cancellationToken);
+            //var channelReader = await connection.StreamAsChannelAsync<ExecutionResult>("query", query, cancellationToken);
             var subject = new Subject<ExecutionResult>();
             
             var subscriptionTask = Task.Run(async () =>
             {
                 try
                 {
-                    while (await channelReader.WaitToReadAsync(cancellationToken))
+                    // read from the hub using async streams
+                    var stream = connection.StreamAsync<ExecutionResult>("query", query, cancellationToken);
+                    await foreach (var result in stream)
                     {
-                        while (channelReader.TryRead(out var result))
-                        {
-                            subject.OnNext(result);
-                        }
+                        subject.OnNext(result);
                     }
+                    //while (await channelReader.WaitToReadAsync(cancellationToken))
+                    //{
+                    //    while (channelReader.TryRead(out var result))
+                    //    {
+                    //    }
+                    //}
                 }
                 catch (OperationCanceledException)
                 {

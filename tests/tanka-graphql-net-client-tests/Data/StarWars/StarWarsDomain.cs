@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Tanka.GraphQL.Net.Client.Tests.Data.StarWars
 {
@@ -15,12 +13,8 @@ namespace Tanka.GraphQL.Net.Client.Tests.Data.StarWars
 
     public class Human : Character
     {
-        public Human()
-        {
-        }
+        public List<Human> Friends { get; set; } = new List<Human>();
 
-        public List<Human> Friends { get; } = new List<Human>();
-
-        public List<string> AppearsIn { get; } = new List<string>();      
+        public List<string> AppearsIn { get; set; } = new List<string>();      
     }
 }

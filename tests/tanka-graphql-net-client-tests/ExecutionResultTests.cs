@@ -1,8 +1,6 @@
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Tanka.GraphQL.Net.Client.Tests.Data.StarWars;
 using Tanka.GraphQL.Net.Client.Tests.Helpers;
 using Xunit;
@@ -136,9 +134,9 @@ namespace Tanka.GraphQL.Net.Client.Tests
         {
             // Arrange
             var result = new ExecutionResult();
-            var errors = new List<GraphQLError>()
+            var errors = new List<ExecutionError>()
                 {
-                    new GraphQLError("Error message")
+                    new ExecutionError("Error message")
                 };
 
             // Act
@@ -155,12 +153,12 @@ namespace Tanka.GraphQL.Net.Client.Tests
             // Arrange
             var result = new ExecutionResult()
             {
-                Errors = new List<GraphQLError>()
+                Errors = new List<ExecutionError>()
                     {
-                        new GraphQLError("Error message")
+                        new ExecutionError("Error message")
                     }
             };
-            var errors = new List<GraphQLError>();
+            var errors = new List<ExecutionError>();
 
             // Act
             result.Errors = errors;
@@ -175,9 +173,9 @@ namespace Tanka.GraphQL.Net.Client.Tests
             // Arrange
             var result = new ExecutionResult()
             {
-                Errors = new List<GraphQLError>()
+                Errors = new List<ExecutionError>()
                     {
-                        new GraphQLError("Error message")
+                        new ExecutionError("Error message")
                     }
             };
 
